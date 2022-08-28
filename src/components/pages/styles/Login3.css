@@ -1,0 +1,33 @@
+.welcomeWrap {
+    position: relative;
+    background: red;
+    border-radius: 5;
+}
+
+.welcome {
+    box-shadow: darkblue;
+    overflow: hidden;
+    width: 100%;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    position: relative;
+    margin-bottom: 20
+}
+
+.brandText {
+    margin-top: 10;
+    color: rgba(0, 0, 0, 0.54);
+}
+
+.decoBottom {
+    font-size: 480;
+    position: absolute;
+    left: 10;
+    bottom: -190;
+    opacity: 0.1;
+    color: white
+}
