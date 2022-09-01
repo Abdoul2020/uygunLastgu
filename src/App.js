@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { AnimatePresence } from "framer-motion";
 import {
   CreateContainer,
@@ -11,13 +13,45 @@ import {
 } from "./components";
 
 
-
-
 import Login4 from "./components/pages/Login4";
 import RegisterPage from "./components/pages/RegisterPage";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import themeFile from "./utils/theme";
 import { Grid } from "@mui/material";
+import Cookies from 'universal-cookie'; //cookies
+import jwtDecode from "jwt-decode";
+
+
+
+
+//jwt time
+
+const cookies = new Cookies();
+const token = cookies.get('idToken');
+
+console.log("cookiesteki token:",token)
+
+if (token) {
+  const decodedToken = jwtDecode(token);
+  console.log("zaman var:",decodedToken)
+  if (decodedToken.exp * 1000 < Date.now()) {
+    // store.dispatch(logoutUser());
+    // window.location.href = '/';
+    console.log("zaman Bitti")
+
+  } else {
+    // store.dispatch({ type: SET_AUTHENTICATED });
+    // axios.defaults.headers.common['Authorization'] = token;
+    // store.dispatch(getUserData());
+
+    console.log("daha zaman var")
+
+
+  }
+}
+
+
+
 
 const theme = createTheme(themeFile);
 
@@ -42,6 +76,7 @@ const App = (props) => {
                 element={<TemelInfo />}
               />{" "}
             </Routes>{" "}
+            <ToastContainer/>
           </main>{" "}
         </div>{" "}
       </AnimatePresence>{" "}

@@ -70,6 +70,7 @@ const Register = () => {
                             textAlign="center"
                           >
                             Üye Olun.{" "}
+                            
                           </Typography>{" "}
                         </Stack>{" "}
                       </Grid>{" "}

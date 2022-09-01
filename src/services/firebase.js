@@ -14,7 +14,7 @@ console.log('!!!! firebase initializeApp is runned');
 //const app = initializeApp(getFirebaseConfig());
 
 
-export function registerWithEmailAndPassword(email, password, firstName, lastName, phoneNumber = 0) {
+export function registerWithEmailAndPassword(email, password, firstName, lastName, phoneNumber) {
     return new Promise((resolve, reject) => {
         createUserWithEmailAndPassword(getAuth(app), email, password)
             .then(resp => {
@@ -35,6 +35,8 @@ export function registerWithEmailAndPassword(email, password, firstName, lastNam
                         console.log("genel Updat:", error)
                         reject(error.code)
                     });
+
+                return resolve(resp)
             })
             .catch(error => { reject(error.code) });
     });
@@ -58,8 +60,10 @@ export function loginWithEmailAndPassword(email, password) {
                     resolve(userCredential);
                 }
 
+                return resolve(userCredential)
+
             })
-            .catch(error => { reject(error.code) })
+            .catch((error) => { reject(error) })
     });
 }
 
@@ -77,7 +81,7 @@ export function sendVerifyEmail() {
 
 export function updateUserProfile(firstName, lastName, phoneNumber) {
     return new Promise((resolve, reject) => {
-        updateProfile(getAuth(app).currentUser, { displayName: (firstName + ' ' + lastName), phoneNumber: phoneNumber })
+        updateProfile(getAuth(app).currentUser, { displayName: (firstName + ' ' + lastName), photoURL: phoneNumber })
             .then(resp => { resolve(true) })
             .catch(error => { reject(error.code) });
     });

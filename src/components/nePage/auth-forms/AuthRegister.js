@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import MenuItem from "@mui/material/MenuItem";
@@ -45,6 +44,14 @@ import { registerWithEmailAndPassword } from '../../../services/firebase';
 import { toastify } from '../../../services/toastify';
 import { selectUser } from '../../../services/redux/userSlice'
 
+//redux toolkit gerekenler
+import { useSelector, useDispatch } from 'react-redux';
+
+
+//redux toolKit
+import {addUserAsync}  from "../../../services/redux/registerSlice"
+
+
 
 
 
@@ -57,6 +64,50 @@ import { selectUser } from '../../../services/redux/userSlice'
 const FirebaseRegister = ({ ...others }) => {
   const theme = useTheme();
 
+  //redux toolkit getirme
+  const dispatch= useDispatch()
+  //const user = useSelector(state => state.registerSlice.value);
+    const registerStatus = useSelector(state => state.registerSlice.status);
+    //const registerError = useSelector(state => state.registerSlice.errors);
+
+console.log("register status:",registerStatus )
+
+
+//for redirect from here
+const navigate = useNavigate();
+const scriptedRef = useScriptRef();
+
+  async function  postUserNew(e){
+    dispatch(addUserAsync({
+      email: e.email,
+      password:e.password,
+      firstName:e.firstName,
+      lastName:e.lastName,
+      phoneNumber:e.phoneNumber
+
+    }))
+    console.log("uye oldu")
+    //navigate("/login")
+  }
+
+
+  //rgister useEffect status
+  useEffect(() => {
+    if (registerStatus == "success") {
+        console.log("suces status here: ",registerStatus)
+        // router.push("/select-profile");
+        toastify({ type: 'success', message: 'Email Dogrulama linki gonderildi' });
+        navigate("/login")
+        // dispatch(statusReset());
+    }
+    else if (registerStatus == "error") {
+      console.log("status Error")
+    }
+    else if(registerStatus == "loading"){
+      console.log("loading hee")
+    }
+
+}, [registerStatus]);
 
   //const firebaseAuth = getAuth(app);
   
@@ -72,10 +123,11 @@ const FirebaseRegister = ({ ...others }) => {
     console.error("Register");
   };
 
+
+//paswword
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
   };
-
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
@@ -90,15 +142,15 @@ const FirebaseRegister = ({ ...others }) => {
     changePassword("123456");
   }, []);
 
-  //Check the text field only take Letters
 
+  //Check the text field only take Letters
   const [letterValue, setLettevalue] = useState("");
   const [letterSoyadValue, setLetteSoyadvalue] = useState("");
   const onLetterOnly = (e) => {
     const re = /^[a-zA-Z]+$/g;
     // if value is not blank, then test the regex
     if (e.target.value === "" || re.test(e.target.value)) {
-      setLettevalue(e.target.value);
+      setLettevalue(e.firstName);
       console.log(letterValue);
     }
   };
@@ -107,7 +159,7 @@ const FirebaseRegister = ({ ...others }) => {
     const re = /^[a-zA-Z]+$/g;
     // if value is not blank, then test the regex
     if (e.target.value === "" || re.test(e.target.value)) {
-      setLetteSoyadvalue(e.target.value);
+      setLetteSoyadvalue(e.lastName);
       console.log(letterSoyadValue);
     }
   };
@@ -245,40 +297,7 @@ const FirebaseRegister = ({ ...others }) => {
   const [validPassoword, setValidPassword] = React.useState(false);
 
   
-
-  const user = useSelector(selectUser);
-  console.log("usedrInfo:",user);
-//User Register function from here..
-const navigate = useNavigate();
 //useEffect(() => { if (user.uid) { navigate("/profile"); toastify({ type: 'info', message: 'Lutfen suanki kullanicidan cikis yapiniz.' }); } });
- 
-const userDataSubmit = (event) => {
-    //event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log("tıklandı ok regisater")
-    registerWithEmailAndPassword(
-      data.get("email"),
-      data.get("password"),
-      data.get("firstName"),
-      data.get("lastName"),
-      data.get("phoneNumber")
-    )
-      .then((result) => {
-        console.log(result)
-        if (result === "Success") {
-          toastify({
-            type: "success",
-            message: "Email Dogrulama linki gonderildi, tekrar giriş yapınız.",
-          });
-          navigate("/login");
-        } else {
-          throw new Error("Bilinmeyen Bir Hata Olustu");
-        }
-      })
-      .catch((error) => {
-        toastify({ type: "error", message: error });
-      });
-  };
 
   //end of function...
 
@@ -307,8 +326,8 @@ const userDataSubmit = (event) => {
           email: "",
           password: "",
           phoneNumber: "",
-          fname: "",
-          lname: "",
+          firstName: "",
+          lastName: "",
           submit: null,
         }}
         validationSchema={Yup.object().shape({
@@ -320,39 +339,41 @@ const userDataSubmit = (event) => {
           phoneNumber: Yup.string()
             .max(7)
             .required("Telefon Numara alanı boş geçilemez."),
-          fname: Yup.string().required("Ad alanı boş geçilemez."),
-          lname: Yup.string().required("Soyad alan boş geçilemez"),
+            firstName: Yup.string().required("Ad alanı boş geçilemez."),
+          lastName: Yup.string().required("Soyad alan boş geçilemez"),
         })}
-        // onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-        //   try {
-        //     if (scriptedRef.current) {
-        //       setStatus({ success: true });
-        //       setSubmitting(false);
-        //     }
-        //   } catch (err) {
-        //     console.error(err);
-        //     if (scriptedRef.current) {
-        //       setStatus({ success: false });
-        //       setErrors({ submit: err.message });
-        //       setSubmitting(false);
-        //     }
-        //   }
-        // }}
+        onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
+          try {
+            if (scriptedRef.current) {
+              setStatus({ success: true });
+              setSubmitting(false);
+              postUserNew(values)
+            }
+          } catch (err) {
+            console.error(err);
+            if (scriptedRef.current) {
+              setStatus({ success: false });
+              setErrors({ submit: err.message });
+              setSubmitting(false);
+            }
+          }
+        }}
       >
         {({
           errors,
           handleBlur,
           handleChange,
           isSubmitting,
+          handleSubmit,
           touched,
           values,
         }) => (
-          <form noValidate {...others} onSubmit={userDataSubmit} >
+          <form noValidate {...others}  onSubmit={handleSubmit}>
             <FormControl
               fullWidth
               error={Boolean(
-                (touched.fname && errors.fname) ||
-                  (touched.lname && errors.lname)
+                (touched.firstName && errors.firstName) ||
+                  (touched.firstName && errors.firstName)
               )}
               sx={{ ...theme.typography.customInput }}
             >
@@ -363,24 +384,25 @@ const userDataSubmit = (event) => {
                     fullWidth
                     label="Adınız"
                     margin="normal"
+                    
                     name="firstName"
                     type="text"
                     defaultValue=""
                     id="firstName"
-                    value={letterValue}
+                    value={values.firstName}
                     onBlur={handleBlur}
                     onChange={(e) => {
                       handleChange(e);
-                      onLetterOnly(e);
+                      onLetterOnly(e.firstName);
                     }}
                     inputProps={{}}
                   />
-                  {touched.fname && errors.fname && (
+                  {touched.firstName && errors.firstName && (
                     <FormHelperText
                       error
                       id="standard-weight-helper-text--register"
                     >
-                      {errors.fname}
+                      {errors.firstName}
                     </FormHelperText>
                   )}
                 </Grid>
@@ -393,21 +415,21 @@ const userDataSubmit = (event) => {
                     type="text"
                     id="lastName"
                     defaultValue=""
-                    value={letterSoyadValue}
+                    value={values.lastName}
                     onBlur={handleBlur}
                     onChange={(e) => {
                       handleChange(e);
-                      onLetterOnlySoyad(e);
+                      onLetterOnlySoyad(e.lastName);
                     }}
                     inputProps={{}}
                     sx={{ ...theme.typography.customInput }}
                   />
-                  {touched.lname && errors.lname && (
+                  {touched.lastName && errors.lastName && (
                     <FormHelperText
                       error
                       id="standard-weight-helper-text--register"
                     >
-                      {errors.lname}
+                      {errors.lastName}
                     </FormHelperText>
                   )}
                 </Grid>
@@ -449,6 +471,8 @@ const userDataSubmit = (event) => {
               {/* spacing={matchDownSM ? 0 : 2} */}
               <Grid container>
                 <Grid item xs={12} sm={4}>
+
+                  
                   <TextField
                     id="phoneHeader"
                     select
@@ -474,7 +498,7 @@ const userDataSubmit = (event) => {
                     name="phoneNumber"
                     defaultValue=""
                     onBlur={handleBlur}
-                    value={valuee}
+                    value={values.phoneNumber}
                     onChange={(e) => {
                       handleChange(e);
                       onChange(e);
@@ -602,7 +626,6 @@ const userDataSubmit = (event) => {
                   type="submit"
                   variant="contained"
                   color="success"
-                  onClick={userDataSubmit}
                 >
                   Üye Ol
                 </Button>
