@@ -17,7 +17,7 @@ import Login4 from "./components/pages/Login4";
 import RegisterPage from "./components/pages/RegisterPage";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import themeFile from "./utils/theme";
-import { Grid } from "@mui/material";
+import ServiceProvider from "./components/pages/ServiceProvider";
 import Cookies from 'universal-cookie'; //cookies
 import jwtDecode from "jwt-decode";
 
@@ -71,6 +71,7 @@ const App = (props) => {
               <Route path="/login" element={<Login4 />} />{" "}
               <Route path="/Register" element={<RegisterPage />} />{" "}
               <Route path="/kasko_sigorta" element={<KasoTeklif />} />{" "}
+              <Route path="/servicep" element={<ServiceProvider />} />{" "}
               <Route
                 path="/kasko_sigortasi/form/temel_Bilgiler"
                 element={<TemelInfo />}
