@@ -2,6 +2,27 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import Cookies from 'universal-cookie'; //cookies
 import axios from 'axios';
 import { toastify } from '../toastify';
+import { getTranslatedData } from "../../utils/translater";
+
+export const getServiceProviderAsync = createAsyncThunk("servicep/getServiceProviderAsync", async () => {
+
+    const cookies = new Cookies();
+    const token = cookies.get('idToken');
+    const res = await axios.get(`/controlza/backend/api/servicep/index.php`, {
+        headers: {
+            'Authorization': token
+        }
+    })
+        .then(res => {
+            console.log(res.data);
+            return res;
+        })
+        .catch(err => {
+            return err;
+        });
+    return res;
+
+});
 
 export const postServiceProviderAsync = createAsyncThunk("servicep/postServiceProviderAsync", async (data) => {
 
@@ -54,6 +75,9 @@ export const putServiceProviderAsync = createAsyncThunk("servicep/putServiceProv
 const servicepSlice = createSlice({
     name: "servicep",
     initialState: {
+        getStatusCode: null,
+        offers: [],
+
         statusErr: "",
         statusCode: null,
         errors: null,
@@ -85,7 +109,20 @@ const servicepSlice = createSlice({
         }
     },
     extraReducers: {
-        [postServiceProviderAsync.pending]: (state, action) => {
+        [getServiceProviderAsync.pending]: (state) => {
+            state.statusErr = "loading";
+        },
+        [getServiceProviderAsync.fulfilled]: (state, action) => {
+            console.log(action.payload.data)
+            state.statusErr = "success";
+            state.getStatusCode = action.payload.data.status;
+            state.errors = action.payload.data.body.errorMessage;
+            state.offers = getTranslatedData(action.payload.data.body.data);
+        },
+        [getServiceProviderAsync.rejected]: (state) => {
+            state.statusErr = "error";
+        },
+        [postServiceProviderAsync.pending]: (state) => {
             console.log("loading")
             state.statusErr = "loading";
         },
@@ -109,12 +146,12 @@ const servicepSlice = createSlice({
                 toastify({ type: 'error', message: state.errors, autoClose: 1000 });
             }
         },
-        [postServiceProviderAsync.rejected]: (state, action) => {
+        [postServiceProviderAsync.rejected]: (state) => {
             console.log("error");
             state.statusErr = "error";
         },
 
-        [putServiceProviderAsync.pending]: (state, action) => {
+        [putServiceProviderAsync.pending]: (state) => {
             state.statusErr = "loading";
         },
         [putServiceProviderAsync.fulfilled]: (state, action) => {
@@ -125,7 +162,7 @@ const servicepSlice = createSlice({
 
             resetOffer();
         },
-        [putServiceProviderAsync.rejected]: (state, action) => {
+        [putServiceProviderAsync.rejected]: (state) => {
             state.statusErr = "error";
         }
     }

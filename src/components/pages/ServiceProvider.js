@@ -9,9 +9,10 @@ import CurrencyLiraIcon from '@mui/icons-material/CurrencyLira';
 import DescriptionIcon from '@mui/icons-material/Description';
 import SyncIcon from '@mui/icons-material/Sync';
 import ServiceProviderListItem from '../ServiceProviderListItem';
-import { postServiceProviderAsync, putServiceProviderAsync } from '../../services/redux/servicepSlice';
+import { getServiceProviderAsync, postServiceProviderAsync, putServiceProviderAsync } from '../../services/redux/servicepSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { resetOffer } from '../../services/redux/servicepSlice'
+import CustomPaginationActionsTable from '../CustomPaginationTable';
 
 
 const ServiceProvider = () => {
@@ -20,7 +21,7 @@ const ServiceProvider = () => {
     const [activeStep, setActiveStep] = React.useState(0);
 
     const dispatch = useDispatch();
-    const { status, statusErr, errors, statusCode, id, service_name, additional_info, form_url, invoice_url, cost, is_completed } = useSelector(state => state.servicepSlice);
+    const { status, statusErr, errors, statusCode, id, service_name, additional_info, form_url, invoice_url, cost, is_completed, getStatusCode, offers } = useSelector(state => state.servicepSlice);
 
     const handleChange = (event) => {
         setType(event.target.value);
@@ -50,7 +51,18 @@ const ServiceProvider = () => {
         setActiveStep(0);
         dispatch(resetOffer());
         setOfferCost(0);
+        getOffers();
     };
+
+    const getOffers = async () => {
+        await dispatch(getServiceProviderAsync()).then(() => {
+        });
+    }
+
+    React.useEffect(() => {
+        getOffers();
+    }, []);
+
     const steps = [
         {
             label: 'Fiyat Teklifi Gir',
@@ -93,6 +105,7 @@ const ServiceProvider = () => {
                             value={type}
                             label="Sigorta Türü"
                             onChange={handleChange}>
+                            <MenuItem value="all">Tümü</MenuItem>
                             <MenuItem value="car">Araç Sigortası</MenuItem>
                             <MenuItem value="kasko">Kasko</MenuItem>
                             <MenuItem value="car_traffic">Trafik Sigortası</MenuItem>
@@ -104,12 +117,12 @@ const ServiceProvider = () => {
                             <MenuItem value="phone">Cep Telefonu Sigortası</MenuItem>
                         </Select>
                     </FormControl><br />
-                    <Button variant="outlined" loading={true} disabled={statusErr === "loading"} onClick={handleOfferClick} loadingPosition="end" color="success" size="large" style={{ width: 260 }} endIcon={statusErr !== "loading" ? <SendIcon /> : <CircularProgress style={{ width: 20, height: 20 }} color="inherit" />}>
+                    <Button variant="outlined" disabled={statusErr === "loading"} onClick={handleOfferClick} loadingPosition="end" color="success" size="large" style={{ width: 260 }} endIcon={statusErr !== "loading" ? <SendIcon /> : <CircularProgress style={{ width: 20, height: 20 }} color="inherit" />}>
                         Sigorta Talebi Getir
                     </Button>
                 </div>
-                {statusCode == 200 &&
-                    <Box sx={{ maxWidth: 640, margin: 'auto', marginTop: 10, borderRadius: 3, padding: 5, boxShadow: 3, background: "rgb(240 238 238)" }}>
+                {statusCode == 200 ?
+                    <Box sx={{ maxWidth: 800, margin: 'auto', marginTop: 10, borderRadius: 3, padding: 5, boxShadow: 3, background: "rgb(240 238 238)" }}>
                         <Stepper activeStep={activeStep} orientation="vertical">
                             {steps.map((step, index) => (
                                 <Step key={step.label} sx={{
@@ -164,7 +177,8 @@ const ServiceProvider = () => {
                             </Paper>
                         )}
                     </Box>
-                }
+                    : getStatusCode == 200 &&
+                    <CustomPaginationActionsTable />}
             </Box>
         </Grid >
     )

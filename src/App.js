@@ -20,6 +20,7 @@ import themeFile from "./utils/theme";
 import ServiceProvider from "./components/pages/ServiceProvider";
 import Cookies from 'universal-cookie'; //cookies
 import jwtDecode from "jwt-decode";
+import Admin from "./components/pages/Admin";
 
 
 
@@ -72,6 +73,7 @@ const App = (props) => {
               <Route path="/Register" element={<RegisterPage />} />{" "}
               <Route path="/kasko_sigorta" element={<KasoTeklif />} />{" "}
               <Route path="/servicep" element={<ServiceProvider />} />{" "}
+              <Route path="/admin" element={<Admin />} />{" "}
               <Route
                 path="/kasko_sigortasi/form/temel_Bilgiler"
                 element={<TemelInfo />}

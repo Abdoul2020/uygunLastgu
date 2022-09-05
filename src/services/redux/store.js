@@ -3,6 +3,7 @@ import userReducer from './userSlice';
 import registerSlice from './registerSlice';
 import loginSlice from './loginSlice'
 import servicepSlice from './servicepSlice'
+import adminSlice from './adminSlice'
 
 
 
@@ -13,6 +14,7 @@ export const store = configureStore({
         user: userReducer,
         loginSlice: loginSlice,
         servicepSlice: servicepSlice,
+        adminSlice: adminSlice,
     },
     middleware: getDefaultMiddleware =>
         getDefaultMiddleware({
