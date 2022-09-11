@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AnimatePresence } from "framer-motion";
@@ -21,7 +21,9 @@ import ServiceProvider from "./components/pages/ServiceProvider";
 import Cookies from 'universal-cookie'; //cookies
 import jwtDecode from "jwt-decode";
 import Admin from "./components/pages/Admin";
-
+import AdminUser from "./components/pages/AdminUser";
+import HeaderAdmin from "./components/HeaderAdmin";
+import Hakkimizda from "./components/pages/Hakkimizda";
 
 
 
@@ -30,11 +32,11 @@ import Admin from "./components/pages/Admin";
 const cookies = new Cookies();
 const token = cookies.get('idToken');
 
-console.log("cookiesteki token:",token)
+console.log("cookiesteki token:", token)
 
 if (token) {
   const decodedToken = jwtDecode(token);
-  console.log("zaman var:",decodedToken)
+  console.log("zaman var:", decodedToken)
   if (decodedToken.exp * 1000 < Date.now()) {
     // store.dispatch(logoutUser());
     // window.location.href = '/';
@@ -57,15 +59,15 @@ if (token) {
 const theme = createTheme(themeFile);
 
 const App = (props) => {
-  
+  const location = useLocation();
 
   return (
     <ThemeProvider theme={theme}>
       <AnimatePresence exitBeforeEnter>
         <div className="w-screen h-auto flex flex-col bg-primary">
-          <Header />
+          {location.pathname == "/admin" || location.pathname == "/adminuser" ? <HeaderAdmin /> : < Header />}
           <main className="mt-14 md:mt-20 pt-4 w-full">
-            <UnderHeader />
+            {location.pathname != "/admin" && location.pathname != "/adminuser" && < UnderHeader />}
             <Routes>
               <Route path="/*" element={<MainContainer />} />{" "}
               {/* <Route path="/createItem" element={<CreateContainer />} />{" "} */}{" "}
@@ -74,12 +76,13 @@ const App = (props) => {
               <Route path="/kasko_sigorta" element={<KasoTeklif />} />{" "}
               <Route path="/servicep" element={<ServiceProvider />} />{" "}
               <Route path="/admin" element={<Admin />} />{" "}
+              <Route path="/adminuser" element={<AdminUser />} />{" "}
               <Route
                 path="/kasko_sigortasi/form/temel_Bilgiler"
                 element={<TemelInfo />}
               />{" "}
             </Routes>{" "}
-            <ToastContainer/>
+            <ToastContainer />
           </main>{" "}
         </div>{" "}
       </AnimatePresence>{" "}

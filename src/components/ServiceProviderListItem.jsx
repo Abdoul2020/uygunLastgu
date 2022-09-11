@@ -7,7 +7,7 @@ const ServiceProviderListItem = (props) => {
             <ListItemIcon style={{color: "#424242"}}>
                 {props.icon}
             </ListItemIcon>
-            <ListItemText primary={<div><b style={{ width: 150, display: 'inline-block' }}>{props.title}</b><span>{props.text}</span></div>} />
+            <ListItemText primary={<div><b style={{ width: 170, display: 'inline-block' }}>{props.title}</b><span>{props.text}</span></div>} />
         </ListItem >
     )
 }

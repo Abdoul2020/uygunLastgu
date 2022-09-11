@@ -3,6 +3,8 @@ import Cookies from 'universal-cookie'; //cookies
 import axios from 'axios';
 import { toastify } from '../toastify';
 import { getTranslatedData } from "../../utils/translater";
+import { postUserInfoAsync } from "./userInfoSlice";
+import { useDispatch } from "react-redux";
 
 export const getServiceProviderAsync = createAsyncThunk("servicep/getServiceProviderAsync", async () => {
 
@@ -54,7 +56,7 @@ export const putServiceProviderAsync = createAsyncThunk("servicep/putServiceProv
         id: data.id,
         //form_url: data.form_url,
         //invoice_url: data.invoice_url,
-        cost: data.cost,
+        [data.title]: data.data,
         //is_completed: data.is_completed
     }, {
         headers: {
@@ -77,19 +79,12 @@ const servicepSlice = createSlice({
     initialState: {
         getStatusCode: null,
         offers: [],
+        offer: [],
+        editOffer: [],
 
         statusErr: "",
         statusCode: null,
         errors: null,
-
-        id: null,
-        service_name: "",
-        status: "",
-        additional_info: "",
-        form_url: null,
-        invoice_url: null,
-        cost: null,
-        is_completed: 0
     },
     reducers: {
         statusReset(state) {
@@ -97,15 +92,10 @@ const servicepSlice = createSlice({
         },
         resetOffer(state) {
             state.statusCode = null;
-
-            state.id = null;
-            state.service_name = "";
-            state.status = "";
-            state.additional_info = "";
-            state.form_url = null;
-            state.invoice_url = null;
-            state.cost = null;
-            state.is_completed = 0;
+            state.offer = [];
+        },
+        setEditOffer(state, action) {
+            state.editOffer = action.payload;
         }
     },
     extraReducers: {
@@ -132,19 +122,10 @@ const servicepSlice = createSlice({
             state.statusErr = "success";
             state.statusCode = action.payload.data.status;
 
-            if (state.statusCode == 200) {
-                state.id = action.payload.data.body.data.id;
-                state.service_name = action.payload.data.body.data.service_name;
-                state.status = action.payload.data.body.data.status;
-                state.additional_info = action.payload.data.body.data.additional_info;
-                state.form_url = action.payload.data.body.data.form_url;
-                state.invoice_url = action.payload.data.body.data.invoice_url;
-                state.cost = action.payload.data.body.data.cost;
-                state.is_completed = action.payload.data.body.data.is_completed;
-            }
-            else {
+            if (state.statusCode == 200)
+                state.offer = action.payload.data.body.data;
+            else
                 toastify({ type: 'error', message: state.errors, autoClose: 1000 });
-            }
         },
         [postServiceProviderAsync.rejected]: (state) => {
             console.log("error");
@@ -156,10 +137,7 @@ const servicepSlice = createSlice({
         },
         [putServiceProviderAsync.fulfilled]: (state, action) => {
             console.log(action.payload.data)
-            //state.errors = action.payload.data.data.body.errorMessage;
             state.statusErr = "success";
-            //state.statusCode = action.payload.data.data.status;
-
             resetOffer();
         },
         [putServiceProviderAsync.rejected]: (state) => {
@@ -167,5 +145,5 @@ const servicepSlice = createSlice({
         }
     }
 })
-export const { statusReset, resetOffer } = servicepSlice.actions
+export const { statusReset, resetOffer, setEditOffer } = servicepSlice.actions
 export default servicepSlice.reducer;

@@ -4,7 +4,7 @@ import registerSlice from './registerSlice';
 import loginSlice from './loginSlice'
 import servicepSlice from './servicepSlice'
 import adminSlice from './adminSlice'
-
+import userInfoSlice from './userInfoSlice';
 
 
 export const store = configureStore({
@@ -15,9 +15,11 @@ export const store = configureStore({
         loginSlice: loginSlice,
         servicepSlice: servicepSlice,
         adminSlice: adminSlice,
+        userInfo: userInfoSlice,
     },
     middleware: getDefaultMiddleware =>
         getDefaultMiddleware({
             serializableCheck: false,
         }),
 });
+

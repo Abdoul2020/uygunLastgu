@@ -2,19 +2,20 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import {
     Box, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableSortLabel, Toolbar, Typography,
-    Paper, Checkbox, IconButton, InputAdornment, Tooltip, FormControlLabel, Switch, ButtonGroup, Grid, TextField, FormControl, InputLabel,
-    Select, MenuItem, Skeleton, Modal
+    Paper, IconButton, InputAdornment, FormControlLabel, Switch, TextField, FormControl, InputLabel,
+    Select, MenuItem, Skeleton, Chip
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import CloseIcon from '@mui/icons-material/Close';
-import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import LockOpenIcon from '@mui/icons-material/LockOpen';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import BlockIcon from '@mui/icons-material/Block';
 import DoneIcon from '@mui/icons-material/Done';
+import WarningAmberIcon from '@mui/icons-material/WarningAmber';
+import { getUserInfo, putUserRole } from '../services/redux/adminSlice';
 import { visuallyHidden } from '@mui/utils';
 import { useDispatch, useSelector } from 'react-redux';
-import { getServiceProviderAsync, putServiceProviderAsync, setEditOffer } from '../services/redux/servicepSlice';
-import { postUserInfoAsync } from '../services/redux/userInfoSlice';
-import UserInfoCard from './UserInfoCard';
 import ButtonConfirm from './ButtonConfirm';
 
 const style = {
@@ -60,35 +61,39 @@ function stableSort(array, comparator) {
 
 const headCells = [
     {
-        id: 'service_name',
-        label: 'Sigorta Tipi',
+        id: 'name',
+        label: 'Ad Soyad',
     },
     {
-        id: 'status',
-        label: 'Durum',
+        id: 'phone',
+        label: 'Telefon Numarası',
     },
     {
-        id: 'additional_info',
-        label: 'Ek Bilgi',
+        id: 'email',
+        label: 'E-Posta',
     },
     {
-        id: 'form_url',
-        label: 'Form Linki',
+        id: 'vergiNo',
+        label: 'Vergi Numarası',
     },
     {
-        id: 'invoice_url',
-        label: 'Fatura Linki',
+        id: 'tc',
+        label: 'Tc Kimlik No',
     },
     {
-        id: 'cost',
-        label: 'Teklif',
+        id: 'created_at',
+        label: 'Oluşturma Tarihi',
     },
     {
-        id: 'is_completed',
-        label: 'is completed',
+        id: 'last_login_at',
+        label: 'Son Giriş Tarihi',
     },
     {
-        id: 'process',
+        id: 'email_verified',
+        label: 'E-Posta Onayı',
+    },
+    {
+        id: 'proccess',
         label: 'İşlem',
     },
 ];
@@ -135,7 +140,7 @@ EnhancedTableHead.propTypes = {
 };
 
 const EnhancedTableToolbar = (props) => {
-    const { searchValue, setSearchValue, offers, setFilterRows } = props;
+    const { searchValue, setSearchValue, offers, setFilterRows, roleSelect, handleChangeRole } = props;
 
     const requestSearch = (searchedValue) => {
         setSearchValue(searchedValue);
@@ -159,8 +164,20 @@ const EnhancedTableToolbar = (props) => {
                 variant="h6"
                 id="tableTitle"
                 component="div">
-                Sigorta Talepleri
+                Kullanıcılar
             </Typography>
+            <FormControl style={{ width: 260, marginRight: 10, textAlign: 'left' }} size="small">
+                <InputLabel color="success" id="demo-simple-select-label">Yetki Türü</InputLabel>
+                <Select color="success"
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={roleSelect}
+                    label="Yetki Türü"
+                    onChange={handleChangeRole}>
+                    <MenuItem value="user">Üye</MenuItem>
+                    <MenuItem value="servicep">Yetkili</MenuItem>
+                </Select>
+            </FormControl>
             <TextField
                 label="Ara"
                 size='small'
@@ -183,9 +200,8 @@ const EnhancedTableToolbar = (props) => {
     );
 };
 
-export default function CustomPaginationActionsTable() {
-    const { offers, statusErr, statusCode } = useSelector(state => state.servicepSlice);
-    const { user, statusUser } = useSelector(state => state.userInfo);
+export default function UserListTable() {
+    const { users, status, statusCode } = useSelector(state => state.adminSlice);
 
     const [order, setOrder] = React.useState('asc');
     const [orderBy, setOrderBy] = React.useState('calories');
@@ -193,13 +209,14 @@ export default function CustomPaginationActionsTable() {
     const [dense, setDense] = React.useState(true);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const [searchValue, setSearchValue] = React.useState("");
-    const [filterRows, setFilterRows] = React.useState(offers);
-    const [showUserInfo, setShowUserInfo] = React.useState(false);
+    const [filterRows, setFilterRows] = React.useState(users);
+    const [roleSelect, setRoleSelect] = React.useState("user");
 
     const dispatch = useDispatch();
-    const getAllOffersHistory = async () => {
-        await dispatch(getServiceProviderAsync()).then((res) => {
-            setFilterRows(res.payload.data.body.data);
+
+    const getUserInfoByRole = async (role) => {
+        await dispatch(getUserInfo({ role: role })).then((res) => {
+            setFilterRows(JSON.parse('{' + res.payload.data.substring(5)).body.data);
             setSearchValue("");
         });;
     }
@@ -224,34 +241,29 @@ export default function CustomPaginationActionsTable() {
     };
 
     const emptyRows =
-        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - (filterRows.length == offers.length ? offers : filterRows).length) : 0;
+        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - (filterRows.length == users.length ? users : filterRows).length) : 0;
 
-    const handleClickCompleteOffer = async (id, accepted) => {
-        if (accepted) {
-            await dispatch(putServiceProviderAsync({ id: id, title: "is_completed", data: true })).then((res) => {
-                getAllOffersHistory();
+    const handleChangeRole = (e) => {
+        setRoleSelect(e.target.value);
+        getUserInfoByRole(e.target.value);
+    }
+
+    const handleClickDoServicep = (res, mail) => {
+        if (res) {
+            dispatch(putUserRole({ email: mail })).then((res) => {
+                getUserInfoByRole(roleSelect);
             });
         }
     }
-
-    const handleClickViewDetails = async (uid) => {
-        setShowUserInfo(true);
-        dispatch(postUserInfoAsync({ id: uid }));
-    }
-
-    const handleClickEditOffer = async (data) => {
-        dispatch(setEditOffer(data));
-    }
-
     React.useEffect(() => {
-        getAllOffersHistory();
+        getUserInfoByRole(roleSelect);
     }, []);
 
     return (
         <Box sx={{ width: '90%', margin: 'auto', marginTop: 5 }}>
             <Paper sx={{ width: '100%', mb: 2 }}>
-                <EnhancedTableToolbar searchValue={searchValue} setSearchValue={setSearchValue} offers={offers} setFilterRows={setFilterRows} />
-                {statusErr === "success" ?
+                <EnhancedTableToolbar searchValue={searchValue} setSearchValue={setSearchValue} offers={users} setFilterRows={setFilterRows} roleSelect={roleSelect} handleChangeRole={handleChangeRole} />
+                {status === "success" && statusCode == 200 ?
                     <TableContainer>
                         <Table
                             sx={{ minWidth: 750 }}
@@ -262,10 +274,10 @@ export default function CustomPaginationActionsTable() {
                                 order={order}
                                 orderBy={orderBy}
                                 onRequestSort={handleRequestSort}
-                                rowCount={(filterRows != "" ? offers : filterRows).length}
+                                rowCount={(filterRows != "" ? users : filterRows).length}
                             />
                             <TableBody>
-                                {stableSort((filterRows.length == offers.length && statusErr === "success" ? offers : filterRows), getComparator(order, orderBy))
+                                {stableSort((filterRows.length == users.length && status === "success" ? users : filterRows), getComparator(order, orderBy))
                                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                     .map((row, index) => {
                                         return (
@@ -273,25 +285,37 @@ export default function CustomPaginationActionsTable() {
                                                 hover
                                                 tabIndex={-1}
                                                 key={row.id}>
-                                                <TableCell align="center">{row.service_name}</TableCell>
-                                                <TableCell align="center">{row.status}</TableCell>
-                                                <TableCell align="center">{row.additional_info}</TableCell>
-                                                <TableCell align="center">{row.form_url}</TableCell>
-                                                <TableCell align="center">{row.invoice_url}</TableCell>
-                                                <TableCell align="center">{row.cost}</TableCell>
-                                                <TableCell align="center">{row.is_completed}</TableCell>
+                                                <TableCell align="center">{row.name}</TableCell>
+                                                <TableCell align="center">{row.phone}</TableCell>
+                                                <TableCell align="center">{row.email}</TableCell>
+                                                <TableCell align="center">{row.vergiNo}</TableCell>
+                                                <TableCell align="center">{row.tc}</TableCell>
+                                                <TableCell align="center">{row.created_at}</TableCell>
+                                                <TableCell align="center">{row.last_login_at}</TableCell>
                                                 <TableCell align="center">
-                                                    <ButtonConfirm onConfirm={(type) => handleClickCompleteOffer(row.id, type)} color="success" tooltip="Onayla" dialogText="Bu sigortayı tamamlamak istiyor musun ?" dialogTitle="Emin misin ?" icon={<DoneIcon />} />
-                                                    <Tooltip title="Görüntüle" arrow>
-                                                        <IconButton aria-label="Görüntüle" size="small" color="warning" onClick={() => handleClickViewDetails(row.user_uid)}>
-                                                            <RemoveRedEyeOutlinedIcon />
-                                                        </IconButton>
-                                                    </Tooltip>
-                                                    <Tooltip title="Düzenle" arrow>
-                                                        <IconButton aria-label="Görüntüle" size="small" color="error" onClick={() => handleClickEditOffer(row)}>
-                                                            <EditOutlinedIcon />
-                                                        </IconButton>
-                                                    </Tooltip>
+                                                    {row.email_verified === 1 ?
+                                                        <Chip
+                                                            color="success"
+                                                            size="small"
+                                                            style={{ width: 130 }}
+                                                            variant='outlined'
+                                                            icon={<DoneIcon />}
+                                                            label="Onaylandı" /> :
+                                                        <Chip
+                                                            color="warning"
+                                                            size="small"
+                                                            style={{ width: 100 }}
+                                                            variant='outlined'
+                                                            icon={<WarningAmberIcon />}
+                                                            label="Onay Bekliyor" />
+                                                    }</TableCell>
+                                                <TableCell align="center">
+                                                    {roleSelect === "user" ?
+                                                        <ButtonConfirm tooltip="Yetkili Yap" onConfirm={(res) => handleClickDoServicep(res, row.email)} color="success" dialogText={row.name + " adlı kullanıcıyı yetkili yapmak istiyor musunuz ?"} dialogTitle="Emin misin ?" icon={<ArrowUpwardIcon />} /> :
+                                                        <ButtonConfirm tooltip="Üye Yap" color="error" dialogText={row.name + " adlı yetkiliyi tekrar üye yapmak istiyor musunuz ?"} dialogTitle="Emin misin ?" icon={<ArrowDownwardIcon />} />}
+                                                    {row.blocked === 0 ?
+                                                        <ButtonConfirm tooltip="Engelle" color="error" dialogText={row.name + " adlı kullanıcıyı yasaklamak istiyor musunuz ?"} dialogTitle="Emin misin ?" icon={<BlockIcon />} /> :
+                                                        <ButtonConfirm tooltip="Engeli Kaldır" color="success" dialogText={row.name + " adlı kullanıcının yasağını kaldırmak istiyor musunuz ?"} dialogTitle="Emin misin ?" icon={<LockOpenIcon />} />}
                                                 </TableCell>
                                             </TableRow>
                                         );
@@ -316,7 +340,7 @@ export default function CustomPaginationActionsTable() {
                 <TablePagination
                     rowsPerPageOptions={[10, 25, 50]}
                     component="div"
-                    count={(filterRows.length == offers.length && statusErr === "success" ? offers : filterRows).length}
+                    count={(filterRows.length == users.length && status === "success" ? users : filterRows).length}
                     rowsPerPage={rowsPerPage}
                     page={page}
                     labelRowsPerPage="Sayfa başına gösterim"
@@ -330,23 +354,6 @@ export default function CustomPaginationActionsTable() {
                 control={<Switch checked={dense} onChange={handleChangeDense} />}
                 label="Küçük Gösterim"
             />
-            <Modal
-                open={showUserInfo}
-                onClose={() => setShowUserInfo(false)}>
-                <Box sx={style}>
-                    {statusUser === "success" ?
-                        <div>
-                            <h3 style={{ textAlign: 'center', fontWeight: 500 }}>Gönderen Kişi</h3>
-                            <hr style={{ width: 250, textAlign: 'center', margin: 'auto' }} />
-                            <UserInfoCard user={user} />
-                        </div>
-                        : <Box sx={{ width: "96%", margin: 'auto' }}>
-                            <Skeleton />
-                            <Skeleton animation="wave" />
-                            <Skeleton animation={false} />
-                        </Box>}
-                </Box>
-            </Modal>
         </Box >
     );
 }

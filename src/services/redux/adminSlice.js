@@ -4,7 +4,6 @@ import axios from 'axios';
 import { getTranslatedData } from "../../utils/translater";
 
 export const getAllOffersProviderAsync = createAsyncThunk("admin/getAllOffersProviderAsync", async (data) => {
-
     const cookies = new Cookies();
     const token = cookies.get('idToken');
     const res = await axios.get(`/controlza/backend/api/admin/offers/index.php?iscompleted=${data.is_completed}`, {
@@ -19,13 +18,49 @@ export const getAllOffersProviderAsync = createAsyncThunk("admin/getAllOffersPro
             return err;
         });
     return res;
-
 });
 
-const adminSlice = createSlice({
+export const getUserInfo = createAsyncThunk("admin/getUserInfo", async (data) => {
+    const cookies = new Cookies();
+    const token = cookies.get('idToken');
+    const res = await axios.get(`/controlza/backend/api/admin/users/index.php?role=${data.role}`, {
+        headers: {
+            'Authorization': token
+        }
+    })
+        .then(res => {
+            return res;
+        })
+        .catch(err => {
+            return err;
+        });
+    return res;
+});
+
+export const putUserRole = createAsyncThunk("admin/putUserRole", async (data) => {
+    const cookies = new Cookies();
+    const token = cookies.get('idToken');
+    const res = await axios.put(`/controlza/backend/api/role/index.php`, {
+        email: data.email
+    }, {
+        headers: {
+            'Authorization': token
+        }
+    })
+        .then(res => {
+            return res;
+        })
+        .catch(err => {
+            return err;
+        });
+    return res;
+});
+
+export const adminSlice = createSlice({
     name: "admin",
     initialState: {
         offers: [],
+        users: [],
         status: "",
         statusCode: null,
         errors: null,
@@ -35,13 +70,39 @@ const adminSlice = createSlice({
             state.status = "loading";
         },
         [getAllOffersProviderAsync.fulfilled]: (state, action) => {
-            //console.log(action.payload.data)
             state.offers = getTranslatedData(action.payload.data.body.data);
+            console.log(state.offers);
             state.status = "success";
             state.statusCode = action.payload.data.status;
             state.errors = action.payload.data.body.errorMessage;
         },
         [getAllOffersProviderAsync.rejected]: (state) => {
+            state.status = "error";
+        },
+        [getUserInfo.pending]: (state) => {
+            state.status = "loading";
+        },
+        [getUserInfo.fulfilled]: (state, action) => {
+            let val = JSON.parse('{' + action.payload.data.substring(5));
+            state.users = val.body.data;
+            state.status = "success";
+            console.log(state.users);
+            state.statusCode = val.status;
+            state.errors = val.body.errorMessage;
+        },
+        [getUserInfo.rejected]: (state) => {
+            state.status = "error";
+        },
+        [putUserRole.pending]: (state) => {
+            state.status = "loading";
+        },
+        [putUserRole.fulfilled]: (state, action) => {
+            console.log(action.payload);
+            state.status = "success";
+            state.statusCode = action.payload.data.status;
+            state.errors = action.payload.data.body.errorMessage;
+        },
+        [putUserRole.rejected]: (state) => {
             state.status = "error";
         }
     }
