@@ -12,16 +12,21 @@ import ServiceProviderListItem from '../ServiceProviderListItem';
 import { getServiceProviderAsync, postServiceProviderAsync, putServiceProviderAsync } from '../../services/redux/servicepSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { resetOffer, setEditOffer } from '../../services/redux/servicepSlice'
-import { postUserInfoAsync } from '../../services/redux/userInfoSlice';
+import { getUserInfoNoIdAsync, postUserInfoAsync } from '../../services/redux/userInfoSlice';
 import CustomPaginationActionsTable from '../CustomPaginationTable';
 import UserInfoCard from '../UserInfoCard';
+import Cookies from 'universal-cookie';
+import { useNavigate } from "react-router-dom";
+import jwtDecode from 'jwt-decode';
 
 const ServiceProvider = () => {
     const [type, setType] = React.useState('');
     const [offerCost, setOfferCost] = useState(null);
     const [activeStep, setActiveStep] = React.useState(0);
 
+    const navigate = useNavigate()
     const dispatch = useDispatch();
+
     const { statusErr, statusCode, editOffer } = useSelector(state => state.servicepSlice);
     const { user, statusUser } = useSelector(state => state.userInfo);
 
@@ -93,10 +98,41 @@ const ServiceProvider = () => {
                     <ServiceProviderListItem icon={<CurrencyLiraIcon />} title="Teklif" text={offerCost != null ? offerCost + "₺" : editOffer.cost + "₺"} />
                     <Button variant="outlined" color="success" style={{ marginTop: 10 }}>Formu Yükle</Button>
                 </List >
+        },
+        {
+            label: 'Fatura Yükle',
+            description:
+                <List style={{ marginTop: 10, marginBottom: 10 }}>
+                    <ServiceProviderListItem icon={<DescriptionIcon />} title="Sigorta Türü" text={editOffer.service_name} />
+                    <ServiceProviderListItem icon={<SyncIcon />} title="Durum" text={editOffer.status} />
+                    <ServiceProviderListItem icon={<AddIcon />} title="Ek Bilgi" text={editOffer.additional_info} />
+                    <ServiceProviderListItem icon={<CurrencyLiraIcon />} title="Teklif" text={offerCost != null ? offerCost + "₺" : editOffer.cost + "₺"} />
+                    <ServiceProviderListItem icon={<DescriptionIcon />} title="Fatura Linki" text={editOffer.form_url} />
+                    <Button variant="outlined" color="success" style={{ marginTop: 10 }}>Faturayı Yükle</Button>
+                </List >
         }
     ];
+
+    React.useEffect(() => {
+        const cookies = new Cookies();
+        const token = cookies.get('idToken');
+        if (token != null) {
+            const decodedToken = jwtDecode(token);
+            if (decodedToken.exp * 1000 < Date.now())
+                navigate("/404");
+            else {
+                dispatch(getUserInfoNoIdAsync()).then((res) => {
+                    if (res.payload.data.body.data.role != "servicep")
+                        navigate("/404");
+                });
+
+            }
+        } else
+            navigate("/404");
+    }, []);
+
     return (
-        <Grid container direction="column" sx={{ minHeight: '87vh' }}>
+        <Grid container direction="column" sx={{ minHeight: '89vh' }}>
             <Box sx={{ flexGrow: 1 }}>
                 <div style={{ width: '100%', textAlign: 'center' }}>
                     <FormControl style={{ width: 260, marginTop: 20, marginBottom: 10, textAlign: 'left' }}>
@@ -108,8 +144,7 @@ const ServiceProvider = () => {
                             label="Sigorta Türü"
                             onChange={handleChange}>
                             <MenuItem value="all">Tümü</MenuItem>
-                            <MenuItem value="car_general">Araç Sigortası</MenuItem>
-                            <MenuItem value="kasko">Kasko</MenuItem>
+                            <MenuItem value="car_general">Kasko</MenuItem>
                             <MenuItem value="car_traffic">Trafik Sigortası</MenuItem>
                             <MenuItem value="private_health">Özel Sağlık Sigortası</MenuItem>
                             <MenuItem value="supplementary_health">Tamamlayıcı Sağlık Sigortası</MenuItem>
@@ -124,7 +159,7 @@ const ServiceProvider = () => {
                     </Button>
                 </div>
                 {editOffer != "" ?
-                    <Box sx={{ maxWidth: 800, margin: 'auto', marginTop: 10, borderRadius: 3, padding: 5, boxShadow: 3, background: "rgb(240 238 238)" }}>
+                    <Box sx={{ maxWidth: 800, margin: 'auto', marginTop: 5, borderRadius: 3, padding: 5, boxShadow: 3, background: "rgb(240 238 238)" }}>
                         <Stepper activeStep={activeStep} orientation="vertical">
                             {steps.map((step, index) => (
                                 <Step key={step.label} sx={{
@@ -138,10 +173,9 @@ const ServiceProvider = () => {
                                     <StepLabel
                                         optional={
                                             index === 2 ? (
-                                                <Typography variant="caption">Last step</Typography>
+                                                <Typography variant="caption">Son Adım</Typography>
                                             ) : null
-                                        }
-                                    >
+                                        }>
                                         {step.label}
                                     </StepLabel>
                                     <StepContent>
@@ -151,7 +185,6 @@ const ServiceProvider = () => {
                                                 <Button
                                                     variant="contained"
                                                     color="success"
-                                                    disabled={index === 0 && offerCost === ""}
                                                     onClick={index === steps.length - 1 ? handleOfferSend : handleNext}
                                                     sx={{ mt: 1, mr: 1 }}
                                                 >
@@ -188,7 +221,7 @@ const ServiceProvider = () => {
                             <Skeleton animation="wave" />
                             <Skeleton animation={false} />
                         </Box>)
-                        : < CustomPaginationActionsTable />)
+                        : <CustomPaginationActionsTable />)
                 }
             </Box>
         </Grid >

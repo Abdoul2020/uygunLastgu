@@ -11,7 +11,7 @@ import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 import { visuallyHidden } from '@mui/utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllOffersProviderAsync } from '../services/redux/adminSlice';
-import { postUserInfoAsync, postServiceProviderInfoAsync, resetUsers } from '../services/redux/userInfoSlice';
+import { postUserInfoAsync, resetUsers } from '../services/redux/userInfoSlice';
 import UserInfoCard from './UserInfoCard';
 
 const style = {
@@ -28,11 +28,18 @@ const style = {
 };
 
 function descendingComparator(a, b, orderBy) {
-    if (b[orderBy] < a[orderBy]) {
-        return -1;
-    }
-    if (b[orderBy] > a[orderBy]) {
-        return 1;
+    if (orderBy != "status") {
+        if (b[orderBy] < a[orderBy]) {
+            return -1;
+        }
+        if (b[orderBy] > a[orderBy]) {
+            return 1;
+        }
+    } else {
+        if (b[orderBy].props.label < a[orderBy].props.label)
+            return -1;
+        if (b[orderBy].props.label > a[orderBy].props.label)
+            return 1;
     }
     return 0;
 }
@@ -88,10 +95,10 @@ const headCells = [
         id: 'process_started_at',
         label: 'İşleme Alınma Tarihi',
     },
-    {
+    /*{
         id: 'completed_at',
         label: 'completed at',
-    },
+    },*/
     {
         id: 'is_completed',
         label: 'is completed',
@@ -255,9 +262,9 @@ export default function EnhancedTable() {
 
     const handleClickViewDetails = async (uid, sid) => {
         setShowUserInfo(true);
-        dispatch(postUserInfoAsync({ id: uid })).then(() => {
+        dispatch(postUserInfoAsync({ id: uid, role: "user" })).then(() => {
             if (sid !== "not-set")
-                dispatch(postServiceProviderInfoAsync({ id: sid }));
+                dispatch(postUserInfoAsync({ id: sid, role: "servicep" }));
         });
     }
 
@@ -305,7 +312,7 @@ export default function EnhancedTable() {
                                                 <TableCell align="center">{row.cost}</TableCell>
                                                 <TableCell align="center">{row.created_at}</TableCell>
                                                 <TableCell align="center">{row.process_started_at}</TableCell>
-                                                <TableCell align="center">{row.completed_at}</TableCell>
+                                                {/*<TableCell align="center">{row.completed_at}</TableCell>*/}
                                                 <TableCell align="center">{row.is_completed}</TableCell>
                                                 <TableCell align="center">
                                                     <IconButton aria-label="Görüntüle" size="small" color="warning" onClick={() => handleClickViewDetails(row.user_uid, row.serviceprovider_uid)}>
@@ -365,11 +372,11 @@ export default function EnhancedTable() {
 
                             {serviceprovider != "" ?
                                 <div>
-                                    <h3 style={{ textAlign: 'center', marginTop: 5, fontWeight: 500 }}>Kabul Eden Yetkili</h3>
+                                    <h3 style={{ textAlign: 'center', marginTop: 5, fontWeight: 500 }}>Teklifi Alan Servis Sağlayıcı</h3>
                                     <hr style={{ width: 250, textAlign: 'center', margin: 'auto' }} />
                                     <UserInfoCard user={serviceprovider} />
                                 </div> :
-                                <h3 style={{ textAlign: 'center', marginTop: 5, fontWeight: 500 }}>Herhangi bir yetkili kabul etmemiş</h3>
+                                <h3 style={{ textAlign: 'center', marginTop: 5, fontWeight: 500 }}>Herhangi bir servis sağlayıcı teklifi almamış.</h3>
                             }
                         </div>
                         : <Box sx={{ width: "96%", margin: 'auto' }}>

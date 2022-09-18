@@ -175,7 +175,7 @@ const EnhancedTableToolbar = (props) => {
                     label="Yetki Türü"
                     onChange={handleChangeRole}>
                     <MenuItem value="user">Üye</MenuItem>
-                    <MenuItem value="servicep">Yetkili</MenuItem>
+                    <MenuItem value="servicep">Servis Sağlayıcı</MenuItem>
                 </Select>
             </FormControl>
             <TextField
@@ -216,7 +216,7 @@ export default function UserListTable() {
 
     const getUserInfoByRole = async (role) => {
         await dispatch(getUserInfo({ role: role })).then((res) => {
-            setFilterRows(JSON.parse('{' + res.payload.data.substring(5)).body.data);
+            setFilterRows(res.payload.data.body.data);
             setSearchValue("");
         });;
     }
@@ -248,9 +248,9 @@ export default function UserListTable() {
         getUserInfoByRole(e.target.value);
     }
 
-    const handleClickDoServicep = (res, mail) => {
+    const handleClickDoServicep = (res, uid, role, blocked) => {
         if (res) {
-            dispatch(putUserRole({ email: mail })).then((res) => {
+            dispatch(putUserRole({ uid: uid, role: role, blocked: blocked })).then((res) => {
                 getUserInfoByRole(roleSelect);
             });
         }
@@ -311,11 +311,11 @@ export default function UserListTable() {
                                                     }</TableCell>
                                                 <TableCell align="center">
                                                     {roleSelect === "user" ?
-                                                        <ButtonConfirm tooltip="Yetkili Yap" onConfirm={(res) => handleClickDoServicep(res, row.email)} color="success" dialogText={row.name + " adlı kullanıcıyı yetkili yapmak istiyor musunuz ?"} dialogTitle="Emin misin ?" icon={<ArrowUpwardIcon />} /> :
-                                                        <ButtonConfirm tooltip="Üye Yap" color="error" dialogText={row.name + " adlı yetkiliyi tekrar üye yapmak istiyor musunuz ?"} dialogTitle="Emin misin ?" icon={<ArrowDownwardIcon />} />}
+                                                        <ButtonConfirm tooltip="Servis Sağlayıcı Yap" onConfirm={(res) => handleClickDoServicep(res, row.uid, "servicep", (row.blocked == 0 ? "false" : "true"))} color="success" dialogText={row.name + " adlı kullanıcıyı servis sağlayıcı yapmak istiyor musunuz ?"} dialogTitle="Emin misin ?" icon={<ArrowUpwardIcon />} /> :
+                                                        <ButtonConfirm tooltip="Üye Yap" color="error" onConfirm={(res) => handleClickDoServicep(res, row.uid, "user", (row.blocked == 0 ? "false" : "true"))} dialogText={row.name + " adlı kullanıcıyı servis sağlayıcı yapmak istiyor musunuz ?"} dialogTitle="Emin misin ?" icon={<ArrowDownwardIcon />} />}
                                                     {row.blocked === 0 ?
-                                                        <ButtonConfirm tooltip="Engelle" color="error" dialogText={row.name + " adlı kullanıcıyı yasaklamak istiyor musunuz ?"} dialogTitle="Emin misin ?" icon={<BlockIcon />} /> :
-                                                        <ButtonConfirm tooltip="Engeli Kaldır" color="success" dialogText={row.name + " adlı kullanıcının yasağını kaldırmak istiyor musunuz ?"} dialogTitle="Emin misin ?" icon={<LockOpenIcon />} />}
+                                                        <ButtonConfirm tooltip="Yasakla" color="error" onConfirm={(res) => handleClickDoServicep(res, row.uid, roleSelect, "true")} dialogText={row.name + " adlı kullanıcıyı yasaklamak istiyor musunuz ?"} dialogTitle="Emin misin ?" icon={<BlockIcon />} /> :
+                                                        <ButtonConfirm tooltip="Yasağı Kaldır" color="success" onConfirm={(res) => handleClickDoServicep(res, row.uid, roleSelect, "false")} dialogText={row.name + " adlı kullanıcının yasağını kaldırmak istiyor musunuz ?"} dialogTitle="Emin misin ?" icon={<LockOpenIcon />} />}
                                                 </TableCell>
                                             </TableRow>
                                         );

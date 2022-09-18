@@ -11,7 +11,7 @@ function createData(id, name, translate) {
 const translater = [
     //service name
     createData("service_name", "car_traffic", "Trafik Sigortası"),
-    createData("service_name", "car_general", "Genel Araç Sigortası"),
+    createData("service_name", "car_general", "Kasko"),
     createData("service_name", "private_health", "Kişisel Sağlık Sigortası"),
     createData("service_name", "supplementary_health", "Tamamlayıcı Sağlık Sigortası"),
     createData("service_name", "general_home", "Konut Sigortası"),

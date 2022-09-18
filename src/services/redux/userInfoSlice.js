@@ -2,6 +2,22 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import Cookies from 'universal-cookie';
 import axios from 'axios';
 
+export const getUserInfoNoIdAsync = createAsyncThunk("user/getUserInfoNoIdAsync", async (data) => {
+    const cookies = new Cookies();
+    const token = cookies.get('idToken');
+    const res = await axios.get(`/controlza/backend/api/user/index.php`, {
+        headers: {
+            'Authorization': token
+        }
+    }).then(res => {
+        console.log(res);
+        return res;
+    }).catch(err => {
+        console.log(err);
+    });
+    return res;
+});
+
 export const postUserInfoAsync = createAsyncThunk("user/postUserInfoAsync", async (data) => {
     const cookies = new Cookies();
     const token = cookies.get('idToken');
@@ -17,25 +33,7 @@ export const postUserInfoAsync = createAsyncThunk("user/postUserInfoAsync", asyn
     }).catch(err => {
         console.log(err);
     });
-    return res;
-});
-
-export const postServiceProviderInfoAsync = createAsyncThunk("user/postServiceProviderInfoAsync", async (data) => {
-    const cookies = new Cookies();
-    const token = cookies.get('idToken');
-    const res = await axios.post(`/controlza/backend/api/user/index.php`, {
-        userUID: data.id,
-    }, {
-        headers: {
-            'Authorization': token
-        }
-    }).then(res => {
-        console.log(res);
-        return res;
-    }).catch(err => {
-        console.log(err);
-    });
-    return res;
+    return { data: res, role: data.role };
 });
 
 export const userInfoSlice = createSlice({
@@ -57,30 +55,31 @@ export const userInfoSlice = createSlice({
         },
     },
     extraReducers: {
+        [getUserInfoNoIdAsync.pending]: (state) => {
+            state.statusUser = "loading";
+        },
+        [getUserInfoNoIdAsync.fulfilled]: (state, action) => {
+            console.log(action.payload);
+            state.statusUser = "success";
+        },
+        [getUserInfoNoIdAsync.rejected]: (state) => {
+            state.statusUser = "error";
+        },
         [postUserInfoAsync.pending]: (state) => {
             state.statusUser = "loading";
         },
         [postUserInfoAsync.fulfilled]: (state, action) => {
             console.log(action.payload);
-            state.user = action.payload.data.body.data;
+            if (action.payload.role === "servicep")
+                state.serviceprovider = action.payload.data.data.body.data;
+            else
+                state.user = action.payload.data.data.body.data;
+
             state.statusUser = "success";
-            state.statusCode = action.payload.data.status;
-            state.errors = action.payload.data.body.errorMessage;
+            state.statusCode = action.payload.data.data.status;
+            state.errors = action.payload.data.data.body.errorMessage;
         },
         [postUserInfoAsync.rejected]: (state) => {
-            state.statusUser = "error";
-        },
-        [postServiceProviderInfoAsync.pending]: (state) => {
-            state.statusUser = "loading";
-        },
-        [postServiceProviderInfoAsync.fulfilled]: (state, action) => {
-            console.log(action.payload);
-            state.serviceprovider = action.payload.data.body.data;
-            state.statusUser = "success";
-            state.statusCode = action.payload.data.status;
-            state.errors = action.payload.data.body.errorMessage;
-        },
-        [postServiceProviderInfoAsync.rejected]: (state) => {
             state.statusUser = "error";
         }
     }

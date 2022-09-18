@@ -24,6 +24,8 @@ import Admin from "./components/pages/Admin";
 import AdminUser from "./components/pages/AdminUser";
 import HeaderAdmin from "./components/HeaderAdmin";
 import Hakkimizda from "./components/pages/Hakkimizda";
+import PageNotFound from "./components/pages/PageNotFound";
+import HeaderServicep from "./components/HeaderServicep";
 
 
 
@@ -65,18 +67,20 @@ const App = (props) => {
     <ThemeProvider theme={theme}>
       <AnimatePresence exitBeforeEnter>
         <div className="w-screen h-auto flex flex-col bg-primary">
-          {location.pathname == "/admin" || location.pathname == "/adminuser" ? <HeaderAdmin /> : < Header />}
+          {location.pathname == "/admin" || location.pathname == "/admin/user" ? <HeaderAdmin /> : (location.pathname == "/servicep" ? <HeaderServicep /> : location.pathname != "/404" && < Header />)}
           <main className="mt-14 md:mt-20 pt-4 w-full">
-            {location.pathname != "/admin" && location.pathname != "/adminuser" && < UnderHeader />}
+            {location.pathname != "/admin" && location.pathname != "/admin/user" && location.pathname != "/servicep" && location.pathname != "/404" && < UnderHeader />}
             <Routes>
               <Route path="/*" element={<MainContainer />} />{" "}
+              <Route path="/404" element={<PageNotFound />} />{" "}
               {/* <Route path="/createItem" element={<CreateContainer />} />{" "} */}{" "}
               <Route path="/login" element={<Login4 />} />{" "}
               <Route path="/Register" element={<RegisterPage />} />{" "}
+              <Route path="/hakkimizda" element={<Hakkimizda />} />{" "}
               <Route path="/kasko_sigorta" element={<KasoTeklif />} />{" "}
               <Route path="/servicep" element={<ServiceProvider />} />{" "}
               <Route path="/admin" element={<Admin />} />{" "}
-              <Route path="/adminuser" element={<AdminUser />} />{" "}
+              <Route path="/admin/user" element={<AdminUser />} />{" "}
               <Route
                 path="/kasko_sigortasi/form/temel_Bilgiler"
                 element={<TemelInfo />}

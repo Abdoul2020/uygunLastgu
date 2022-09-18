@@ -3,8 +3,6 @@ import Cookies from 'universal-cookie'; //cookies
 import axios from 'axios';
 import { toastify } from '../toastify';
 import { getTranslatedData } from "../../utils/translater";
-import { postUserInfoAsync } from "./userInfoSlice";
-import { useDispatch } from "react-redux";
 
 export const getServiceProviderAsync = createAsyncThunk("servicep/getServiceProviderAsync", async () => {
 
@@ -54,10 +52,7 @@ export const putServiceProviderAsync = createAsyncThunk("servicep/putServiceProv
     const token = cookies.get('idToken');
     const res = await axios.put(`/controlza/backend/api/servicep/index.php`, {
         id: data.id,
-        //form_url: data.form_url,
-        //invoice_url: data.invoice_url,
         [data.title]: data.data,
-        //is_completed: data.is_completed
     }, {
         headers: {
             'Authorization': token
@@ -79,7 +74,6 @@ const servicepSlice = createSlice({
     initialState: {
         getStatusCode: null,
         offers: [],
-        offer: [],
         editOffer: [],
 
         statusErr: "",
@@ -92,7 +86,6 @@ const servicepSlice = createSlice({
         },
         resetOffer(state) {
             state.statusCode = null;
-            state.offer = [];
         },
         setEditOffer(state, action) {
             state.editOffer = action.payload;
@@ -103,32 +96,29 @@ const servicepSlice = createSlice({
             state.statusErr = "loading";
         },
         [getServiceProviderAsync.fulfilled]: (state, action) => {
-            console.log(action.payload.data)
             state.statusErr = "success";
             state.getStatusCode = action.payload.data.status;
             state.errors = action.payload.data.body.errorMessage;
-            state.offers = getTranslatedData(action.payload.data.body.data);
+            if (state.getStatusCode == 200)
+                state.offers = getTranslatedData(action.payload.data.body.data);
+            else
+                toastify({ type: 'error', message: "Listelenecek teklif bulunamadı", autoClose: 1000 });
+
         },
         [getServiceProviderAsync.rejected]: (state) => {
             state.statusErr = "error";
         },
         [postServiceProviderAsync.pending]: (state) => {
-            console.log("loading")
             state.statusErr = "loading";
         },
         [postServiceProviderAsync.fulfilled]: (state, action) => {
-            console.log("data:" + action.payload.data.body);
             state.errors = action.payload.data.body.errorMessage;
             state.statusErr = "success";
             state.statusCode = action.payload.data.status;
-
-            if (state.statusCode == 200)
-                state.offer = action.payload.data.body.data;
-            else
-                toastify({ type: 'error', message: state.errors, autoClose: 1000 });
+            if (state.statusCode != 200)
+                toastify({ type: 'error', message: "Alınacak talep bulunamadı", autoClose: 1000 });
         },
         [postServiceProviderAsync.rejected]: (state) => {
-            console.log("error");
             state.statusErr = "error";
         },
 
@@ -136,7 +126,6 @@ const servicepSlice = createSlice({
             state.statusErr = "loading";
         },
         [putServiceProviderAsync.fulfilled]: (state, action) => {
-            console.log(action.payload.data)
             state.statusErr = "success";
             resetOffer();
         },
