@@ -46,7 +46,7 @@ const Register = () => {
                   justifyContent="center"
                 >
                   <Grid item sx={{ mb: 3 }}>
-                    <Link to="#">
+                    <Link to="/">
                       <Logo />
                     </Link>{" "}
                   </Grid>{" "}
@@ -92,7 +92,7 @@ const Register = () => {
                     >
                       <Typography
                         component={Link}
-                        to="/girisyap"
+                        to="/login"
                         variant="subtitle1"
                         sx={{ textDecoration: "none" }}
                         color="#388ab3"

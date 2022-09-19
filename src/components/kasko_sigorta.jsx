@@ -144,13 +144,12 @@ const kasko_sigorta = (props) => {
           <div>
 
           <Typography variant="h2">
-
           ARACINIZIN SİGORTASINA
 </Typography>
 
           </div>
            <div>
-            <Link to="/kasko_sigortasi/form/temel_Bilgiler">
+            <Link to="/kasko_sigortasi/form/temel_Bilgiler" target="_blank">
             <Button className={classes.buttonProps} >
               Teklif Alın
             </Button>

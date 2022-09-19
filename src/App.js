@@ -23,7 +23,7 @@ import jwtDecode from "jwt-decode";
 import Admin from "./components/pages/Admin";
 import AdminUser from "./components/pages/AdminUser";
 import HeaderAdmin from "./components/HeaderAdmin";
-import Hakkimizda from "./components/pages/Hakkimizda";
+//import Hakkimizda from "./components/pages/Hakkimizda";
 
 
 
@@ -65,9 +65,15 @@ const App = (props) => {
     <ThemeProvider theme={theme}>
       <AnimatePresence exitBeforeEnter>
         <div className="w-screen h-auto flex flex-col bg-primary">
-          {location.pathname == "/admin" || location.pathname == "/adminuser" ? <HeaderAdmin /> : < Header />}
-          <main className="mt-14 md:mt-20 pt-4 w-full">
-            {location.pathname != "/admin" && location.pathname != "/adminuser" && < UnderHeader />}
+
+
+          {location.pathname == "/admin" || location.pathname == "/adminuser" ? <HeaderAdmin /> : location.pathname=='/login' ? null : location.pathname=='/register' ? null : location.pathname=='/kasko_sigortasi/form/temel_Bilgiler' ? null  : < Header />}
+          
+          <main className={ location.pathname=='/login' ? "mt-0 md:mt-0 pt-0 w-full" : location.pathname=='/register' ? "mt-0 md:mt-0 pt-0 w-full" : location.pathname=='/kasko_sigortasi/form/temel_Bilgiler' ? "mt-0 md:mt-0 pt-0 w-full" : "mt-14 md:mt-20 pt-4 w-full"}>
+
+            {location.pathname=='/login' ? null : location.pathname=='/register' ? null : location.pathname=='/kasko_sigortasi/form/temel_Bilgiler' ? null :location.pathname == "/admin" ? null: location.pathname == "/adminuser"? null : < UnderHeader />}
+            
+            
             <Routes>
               <Route path="/*" element={<MainContainer />} />{" "}
               {/* <Route path="/createItem" element={<CreateContainer />} />{" "} */}{" "}

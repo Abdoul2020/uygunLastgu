@@ -50,11 +50,13 @@ const FooterAll = (props) => {
     <div style={{ width: "100%" }}>
 
       {/* desktop part */}
-      <section style={{ background: "white" }}>
+      <section style={{ background: "white" }} className=" hidden lg:flex">
         <Grid container style={{ width: '70%', margin: 'auto' }}>
           <Grid item xs={12} style={{ marginTop: 10, marginLeft: -5 }}>
             <img src={Logo} alt="" style={{ maxWidth: "100px", display: 'inline-block' }} />
+            
             <p className="text-headingColor text-xl font-bold" style={{ display: 'inline-block' }}>&nbsp;&nbsp;UygunuSec</p>
+
           </Grid>
           <Grid container style={{ marginTop: 50, marginBottom: 50 }}>
 
@@ -88,6 +90,7 @@ const FooterAll = (props) => {
           </div>
         </Grid>
       </section>
+      mobile
     </div>
 
 

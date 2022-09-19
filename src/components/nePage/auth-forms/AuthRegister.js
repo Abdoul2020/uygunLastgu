@@ -6,6 +6,7 @@ import MenuItem from "@mui/material/MenuItem";
 
 // material-ui
 import { useTheme } from "@mui/material/styles";
+
 import {
   Box,
   Button,
@@ -83,8 +84,8 @@ const scriptedRef = useScriptRef();
       password:e.password,
       firstName:e.firstName,
       lastName:e.lastName,
+      phoneHeader : e.phoneHeader,
       phoneNumber:e.phoneNumber
-
     }))
     console.log("uye oldu")
     //navigate("/login")
@@ -146,12 +147,14 @@ const scriptedRef = useScriptRef();
   //Check the text field only take Letters
   const [letterValue, setLettevalue] = useState("");
   const [letterSoyadValue, setLetteSoyadvalue] = useState("");
+
   const onLetterOnly = (e) => {
     const re = /^[a-zA-Z]+$/g;
     // if value is not blank, then test the regex
     if (e.target.value === "" || re.test(e.target.value)) {
-      setLettevalue(e.firstName);
+      setLettevalue(e.target.value);
       console.log(letterValue);
+      console.log("buray")
     }
   };
   //soyad label
@@ -301,6 +304,9 @@ const scriptedRef = useScriptRef();
 
   //end of function...
 
+  const re = /^[a-zA-Z]+$/g;
+  const numberOnly = /^[0-9\b]+$/;
+
   return (
     <>
       <Grid container direction="column" justifyContent="center" spacing={2}>
@@ -328,6 +334,7 @@ const scriptedRef = useScriptRef();
           phoneNumber: "",
           firstName: "",
           lastName: "",
+          phoneHeader:"",
           submit: null,
         }}
         validationSchema={Yup.object().shape({
@@ -341,12 +348,15 @@ const scriptedRef = useScriptRef();
             .required("Telefon Numara alanı boş geçilemez."),
             firstName: Yup.string().required("Ad alanı boş geçilemez."),
           lastName: Yup.string().required("Soyad alan boş geçilemez"),
+          phoneHeader: Yup.string().required("Seçiniz")
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
             if (scriptedRef.current) {
               setStatus({ success: true });
               setSubmitting(false);
+              setLettevalue(values.firstName)
+
               postUserNew(values)
             }
           } catch (err) {
@@ -379,22 +389,21 @@ const scriptedRef = useScriptRef();
             >
               {/* spacing={matchDownSM ? 0 : 2} */}
               <Grid container>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={6} md={6} lg={6} className="md:pr-1">
                   <TextField
                     fullWidth
                     label="Adınız"
                     margin="normal"
-                    
                     name="firstName"
                     type="text"
                     defaultValue=""
                     id="firstName"
                     value={values.firstName}
                     onBlur={handleBlur}
-                    onChange={(e) => {
-                      handleChange(e);
-                      onLetterOnly(e.firstName);
-                    }}
+                    onChange={(e) => 
+                      e.target.value === "" || re.test(e.target.value) ?
+                      handleChange(e) : ""
+                    }
                     inputProps={{}}
                   />
                   {touched.firstName && errors.firstName && (
@@ -406,7 +415,7 @@ const scriptedRef = useScriptRef();
                     </FormHelperText>
                   )}
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={6} md={6} lg={6} className="md:pl-1">
                   <TextField
                     fullWidth
                     label="Soyadınız"
@@ -417,10 +426,10 @@ const scriptedRef = useScriptRef();
                     defaultValue=""
                     value={values.lastName}
                     onBlur={handleBlur}
-                    onChange={(e) => {
-                      handleChange(e);
-                      onLetterOnlySoyad(e.lastName);
-                    }}
+                    onChange={(e) =>
+                      e.target.value === "" || re.test(e.target.value) ? 
+                      handleChange(e): ""
+                    }
                     inputProps={{}}
                     sx={{ ...theme.typography.customInput }}
                   />
@@ -470,7 +479,7 @@ const scriptedRef = useScriptRef();
             >
               {/* spacing={matchDownSM ? 0 : 2} */}
               <Grid container>
-                <Grid item xs={12} sm={4}>
+                <Grid item xs={12} sm={4} md={4} lg={4} className="md:pr-1" >
 
                   
                   <TextField
@@ -478,17 +487,27 @@ const scriptedRef = useScriptRef();
                     select
                     label="Seçiniz"
                     margin="normal"
+                    value={values.phoneHeader}
                     fullWidth
                     name="phoneHeader"
+                    onChange={(e)=>{handleChange(e); console.log("Number changes:", e.target.value)}}
                   >
+                     {touched.phoneHeader && errors.phoneHeader && (
+                    <FormHelperText
+                      error
+                      id="standard-weight-helper-text--register"
+                    >
+                      {errors.phoneHeader}
+                    </FormHelperText>
+                  )}
                     {numbersAll.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
+                      <MenuItem key={option.value} value={option.value} autoFocus={true}  disableGutters={false} divider={true}>
                         {option.label}
                       </MenuItem>
                     ))}
                   </TextField>
                 </Grid>
-                <Grid item xs={12} sm={8}>
+                <Grid item xs={12} sm={8} md={8} lg={8} className="md:pl-1">
                   <TextField
                   id="phoneNumber"
                     fullWidth
@@ -499,10 +518,10 @@ const scriptedRef = useScriptRef();
                     defaultValue=""
                     onBlur={handleBlur}
                     value={values.phoneNumber}
-                    onChange={(e) => {
-                      handleChange(e);
-                      onChange(e);
-                    }}
+                    onChange={(e) => 
+                      e.target.value === "" || numberOnly.test(e.target.value) ? 
+                      handleChange(e): ""
+                    }
                     inputProps={{ maxLength: 7 }}
                   />
 
@@ -550,7 +569,7 @@ const scriptedRef = useScriptRef();
                     </IconButton>
                   </InputAdornment>
                 }
-                inputProps={{}}
+                inputProps={{ minLength: 6 }}
               />
               {touched.password && errors.password && (
                 <FormHelperText

@@ -14,12 +14,12 @@ console.log('!!!! firebase initializeApp is runned');
 //const app = initializeApp(getFirebaseConfig());
 
 
-export function registerWithEmailAndPassword(email, password, firstName, lastName, phoneNumber) {
+export function registerWithEmailAndPassword(email, password, firstName, lastName, phoneHeader, phoneNumber) {
     return new Promise((resolve, reject) => {
         createUserWithEmailAndPassword(getAuth(app), email, password)
             .then(resp => {
                 console.log({ Useriscreated: resp });
-                updateUserProfile(firstName, lastName, phoneNumber)
+                updateUserProfile(firstName, lastName, phoneHeader, phoneNumber)
                     .then(resp => {
                         console.log("update Info:", resp)
                         sendVerifyEmail()
@@ -79,9 +79,9 @@ export function sendVerifyEmail() {
     });
 }
 
-export function updateUserProfile(firstName, lastName, phoneNumber) {
+export function updateUserProfile(firstName, lastName, phoneHeader, phoneNumber) {
     return new Promise((resolve, reject) => {
-        updateProfile(getAuth(app).currentUser, { displayName: (firstName + ' ' + lastName), photoURL: phoneNumber })
+        updateProfile(getAuth(app).currentUser, { displayName: (firstName + ' ' + lastName), photoURL: (phoneHeader + ' ' + phoneNumber) })
             .then(resp => { resolve(true) })
             .catch(error => { reject(error.code) });
     });

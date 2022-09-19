@@ -8,7 +8,7 @@ import { useTheme } from '@mui/material/styles';
  * import logo from 'assets/images/logo.svg';
  *
  */
-//import logo from "../../images/logo0.jpeg"
+import logo from "../../../img/logo35.jpeg"
 
 // ==============================|| LOGO SVG ||============================== //
 
@@ -23,7 +23,7 @@ const Logo = () => {
          *
          */
         <
-        img src = ""
+        img src = { logo }
         alt = "UygunSec"
         width = "100" / >
 

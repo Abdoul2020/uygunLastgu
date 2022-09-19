@@ -24,6 +24,7 @@ export const loginUserAsync = createAsyncThunk("login/loginUserAsync", async(dat
         console.log("verifeied ne:", data.emailVerified);
         if (data.emailVerified === false) {
             toastify({ type: 'success', message: 'Email Dogrulama linki gonderildi,Lütfen Onaylayın.' });
+
             console.log("onay yok :")
         } else {
 
@@ -35,6 +36,7 @@ export const loginUserAsync = createAsyncThunk("login/loginUserAsync", async(dat
 
             //localStorage.setItem("GZIToken", FBIdToken);
             //axios.defaults.headers.common["Authorization"] = FBIdToken;
+
             return { data: data }
         }
     }).catch(err => {
@@ -82,7 +84,7 @@ const loginSlice = createSlice({
             state.status = "loading";
         },
         [loginUserAsync.fulfilled]: (state, action) => {
-            console.log(action.payload.data);
+            console.log("lazim olan bilgiler", action.payload.data);
             state.value = action.payload.data;
             state.status = "success";
             state.uid = action.payload.data.uid;
