@@ -40,8 +40,10 @@ export const getUserInfo = createAsyncThunk("admin/getUserInfo", async (data) =>
 export const putUserRole = createAsyncThunk("admin/putUserRole", async (data) => {
     const cookies = new Cookies();
     const token = cookies.get('idToken');
-    const res = await axios.put(`/controlza/backend/api/role/index.php`, {
-        email: data.email
+    const res = await axios.put(`/controlza/backend/api/admin/users/index.php`, {
+        userUID: data.uid,
+        role: data.role,
+        blocked: data.blocked
     }, {
         headers: {
             'Authorization': token
@@ -83,12 +85,10 @@ export const adminSlice = createSlice({
             state.status = "loading";
         },
         [getUserInfo.fulfilled]: (state, action) => {
-            let val = JSON.parse('{' + action.payload.data.substring(5));
-            state.users = val.body.data;
+            state.users = action.payload.data.body.data;
             state.status = "success";
-            console.log(state.users);
-            state.statusCode = val.status;
-            state.errors = val.body.errorMessage;
+            state.statusCode = action.payload.data.status;
+            state.errors = action.payload.data.body.errorMessage;
         },
         [getUserInfo.rejected]: (state) => {
             state.status = "error";

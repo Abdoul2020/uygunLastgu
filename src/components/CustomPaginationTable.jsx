@@ -31,11 +31,18 @@ const style = {
 };
 
 function descendingComparator(a, b, orderBy) {
-    if (b[orderBy] < a[orderBy]) {
-        return -1;
-    }
-    if (b[orderBy] > a[orderBy]) {
-        return 1;
+    if (orderBy != "status" && orderBy != "is_completed") {
+        if (b[orderBy] < a[orderBy]) {
+            return -1;
+        }
+        if (b[orderBy] > a[orderBy]) {
+            return 1;
+        }
+    } else {
+        if (b[orderBy].props.label < a[orderBy].props.label)
+            return -1;
+        if (b[orderBy].props.label > a[orderBy].props.label)
+            return 1;
     }
     return 0;
 }
@@ -85,7 +92,7 @@ const headCells = [
     },
     {
         id: 'is_completed',
-        label: 'is completed',
+        label: 'Tamamlanma Durumu',
     },
     {
         id: 'process',
@@ -174,7 +181,6 @@ const EnhancedTableToolbar = (props) => {
                                 : <IconButton onClick={() => requestSearch('')} edge="end">
                                     <CloseIcon />
                                 </IconButton>}
-
                         </InputAdornment>
                     )
                 }}
@@ -184,11 +190,11 @@ const EnhancedTableToolbar = (props) => {
 };
 
 export default function CustomPaginationActionsTable() {
-    const { offers, statusErr, statusCode } = useSelector(state => state.servicepSlice);
+    const { offers, statusErr, statusCode, getStatusCode } = useSelector(state => state.servicepSlice);
     const { user, statusUser } = useSelector(state => state.userInfo);
 
     const [order, setOrder] = React.useState('asc');
-    const [orderBy, setOrderBy] = React.useState('calories');
+    const [orderBy, setOrderBy] = React.useState('service_name');
     const [page, setPage] = React.useState(0);
     const [dense, setDense] = React.useState(true);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -236,7 +242,7 @@ export default function CustomPaginationActionsTable() {
 
     const handleClickViewDetails = async (uid) => {
         setShowUserInfo(true);
-        dispatch(postUserInfoAsync({ id: uid }));
+        dispatch(postUserInfoAsync({ id: uid, role: "user" }));
     }
 
     const handleClickEditOffer = async (data) => {
@@ -251,7 +257,7 @@ export default function CustomPaginationActionsTable() {
         <Box sx={{ width: '90%', margin: 'auto', marginTop: 5 }}>
             <Paper sx={{ width: '100%', mb: 2 }}>
                 <EnhancedTableToolbar searchValue={searchValue} setSearchValue={setSearchValue} offers={offers} setFilterRows={setFilterRows} />
-                {statusErr === "success" ?
+                {statusErr === "success" ? getStatusCode == 200 &&
                     <TableContainer>
                         <Table
                             sx={{ minWidth: 750 }}
@@ -316,7 +322,7 @@ export default function CustomPaginationActionsTable() {
                 <TablePagination
                     rowsPerPageOptions={[10, 25, 50]}
                     component="div"
-                    count={(filterRows.length == offers.length && statusErr === "success" ? offers : filterRows).length}
+                    count={statusCode == 200 ? (filterRows.length == offers.length && statusErr === "success" ? offers : filterRows).length : 0}
                     rowsPerPage={rowsPerPage}
                     page={page}
                     labelRowsPerPage="Sayfa başına gösterim"
@@ -325,7 +331,6 @@ export default function CustomPaginationActionsTable() {
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />
             </Paper>
-
             <FormControlLabel
                 control={<Switch checked={dense} onChange={handleChangeDense} />}
                 label="Küçük Gösterim"

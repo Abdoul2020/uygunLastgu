@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 import FeatureLink from "./Navigation/Links/Features/FeaturesLink"
 import FeatureHesap from "./Navigation/Links/Features/FeatureHesap";
 
-const HeaderAdmin = () => {
+const HeaderServicep = () => {
     return (
         <header className="fixed z-50 w-screen p-3 px-4 md:p-6 md:px-16" style={{ background: "black" }}>
 
@@ -28,8 +28,7 @@ const HeaderAdmin = () => {
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: 200 }}
                         className="flex items-center gap-8 ">
-                        <Link to={"/admin"} className='text-base text-white hover:text-zinc-50 duration-100 transition-all ease-in-out cursor-pointer'><FaFileInvoice className='ml-14 ' /> Sigorta Talepleri</Link>
-                        <Link to={"/admin/user"} className='text-base text-white hover:text-zinc-50 duration-100 transition-all ease-in-out cursor-pointer'><FaUserAlt className='ml-8 ' /> Kullanıcılar</Link>
+                        <Link to={"/servicep"} className='text-base text-white hover:text-zinc-50 duration-100 transition-all ease-in-out cursor-pointer'><FaFileInvoice className='ml-14 ' /> Sigorta Talepleri</Link>
                     </motion.ul>
                 </div>
             </div>
@@ -55,4 +54,4 @@ const HeaderAdmin = () => {
     )
 }
 
-export default HeaderAdmin
+export default HeaderServicep;

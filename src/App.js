@@ -10,6 +10,7 @@ import {
   MainContainer,
   UnderHeader,
   TemelInfo,
+  FooterAll,
 } from "./components";
 
 
@@ -23,7 +24,13 @@ import jwtDecode from "jwt-decode";
 import Admin from "./components/pages/Admin";
 import AdminUser from "./components/pages/AdminUser";
 import HeaderAdmin from "./components/HeaderAdmin";
+
 //import Hakkimizda from "./components/pages/Hakkimizda";
+//import Hakkimizda from "./components/pages/Hakkimizda";
+import PageNotFound from "./components/pages/PageNotFound";
+import HeaderServicep from "./components/HeaderServicep";
+import HeaderTop from "./components/HeaderTop";
+
 
 
 
@@ -33,6 +40,7 @@ const cookies = new Cookies();
 const token = cookies.get('idToken');
 
 console.log("cookiesteki token:", token)
+
 
 if (token) {
   const decodedToken = jwtDecode(token);
@@ -66,23 +74,24 @@ const App = (props) => {
       <AnimatePresence exitBeforeEnter>
         <div className="w-screen h-auto flex flex-col bg-primary">
 
-
-          {location.pathname == "/admin" || location.pathname == "/adminuser" ? <HeaderAdmin /> : location.pathname=='/login' ? null : location.pathname=='/register' ? null : location.pathname=='/kasko_sigortasi/form/temel_Bilgiler' ? null  : < Header />}
+          {location.pathname == "/admin" || location.pathname == "/admin/user" ? <HeaderAdmin /> : location.pathname=='/login' ? null : location.pathname=='/register' ? null : location.pathname=='/kasko_sigortasi/form/temel_Bilgiler' ? null : location.pathname == "/404" ? null: location.pathname == "/servicep" ? <HeaderServicep /> : < Header />}
           
-          <main className={ location.pathname=='/login' ? "mt-0 md:mt-0 pt-0 w-full" : location.pathname=='/register' ? "mt-0 md:mt-0 pt-0 w-full" : location.pathname=='/kasko_sigortasi/form/temel_Bilgiler' ? "mt-0 md:mt-0 pt-0 w-full" : "mt-14 md:mt-20 pt-4 w-full"}>
+          <main className={ location.pathname=='/login' ? "mt-0 md:mt-0 pt-0 w-full" : location.pathname=='/register' ? "mt-0 md:mt-0 pt-0 w-full" : location.pathname=='/kasko_sigortasi/form/temel_Bilgiler' ? "mt-0 md:mt-0 pt-0 w-full" : "mt-14 md:mt-24 pt-4 w-full"}>
 
-            {location.pathname=='/login' ? null : location.pathname=='/register' ? null : location.pathname=='/kasko_sigortasi/form/temel_Bilgiler' ? null :location.pathname == "/admin" ? null: location.pathname == "/adminuser"? null : < UnderHeader />}
+            {location.pathname=='/login' ? null : location.pathname=='/register' ? null : location.pathname=='/kasko_sigortasi/form/temel_Bilgiler' ? null :location.pathname == "/admin/user" ? null: location.pathname == "/admin"? null :location.pathname == "/servicep" ? null : location.pathname == "/404" ? null : < UnderHeader />}
             
-            
+
             <Routes>
               <Route path="/*" element={<MainContainer />} />{" "}
+              <Route path="/404" element={<PageNotFound />} />{" "}
               {/* <Route path="/createItem" element={<CreateContainer />} />{" "} */}{" "}
               <Route path="/login" element={<Login4 />} />{" "}
               <Route path="/Register" element={<RegisterPage />} />{" "}
+              {/* <Route path="/about_us" element={<Hakkimizda />} />{" "} */}
               <Route path="/kasko_sigorta" element={<KasoTeklif />} />{" "}
               <Route path="/servicep" element={<ServiceProvider />} />{" "}
               <Route path="/admin" element={<Admin />} />{" "}
-              <Route path="/adminuser" element={<AdminUser />} />{" "}
+              <Route path="/admin/user" element={<AdminUser />} />{" "}
               <Route
                 path="/kasko_sigortasi/form/temel_Bilgiler"
                 element={<TemelInfo />}
@@ -90,6 +99,13 @@ const App = (props) => {
             </Routes>{" "}
             <ToastContainer />
           </main>{" "}
+
+
+{
+  location.pathname == "/admin" || location.pathname == "/admin/user" ? null : location.pathname=='/login' ? null : location.pathname=='/register' ? null : location.pathname=='/kasko_sigortasi/form/temel_Bilgiler' ? null : location.pathname == "/404" ? null: location.pathname == "/servicep" ? null : <FooterAll/>
+}
+
+    
         </div>{" "}
       </AnimatePresence>{" "}
     </ThemeProvider>
