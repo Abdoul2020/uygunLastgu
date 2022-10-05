@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 //import AlignVerticalBottomIcon from "@mui/icons-material/AlignVerticalBottom";
-import {MdLocalGroceryStore} from "react-icons/md"
+import { MdLocalGroceryStore } from "react-icons/md";
 
 import Menu from "./Menu/Menu";
 
@@ -16,15 +16,16 @@ const FeaturesLink = () => {
   };
   return (
     <div className="block" onMouseLeave={hideMenu}>
-         <Link
-            to=""
-            activeclassname="cursor-pointer text-orange-400"
-            onMouseOver={displayMenu}
-            
-        >
-      <li className='text-base text-white hover:text-headingColor duration-100 transition-all ease-in-out cursor-pointer'><MdLocalGroceryStore className='ml-8 '/> Ürünlerimiz </li>
-      
-      </Link>
+      <Link
+        to=""
+        activeclassname="cursor-pointer text-orange-400"
+        onMouseOver={displayMenu}
+      >
+        <li className="text-base  hover:text-headingColor duration-100 transition-all ease-in-out cursor-pointer" style={{color:"#232d63"}}>
+          {" "}
+          Ürünlerimiz{" "}
+        </li>
+      </Link>{" "}
       <Menu isVisible={visible} />{" "}
     </div>
   );

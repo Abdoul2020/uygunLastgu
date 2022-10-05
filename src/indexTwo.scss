@@ -1,0 +1,243 @@
+//from FAQ HERE
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+$bg-color: #F6F8FC;
+$primary-text-color: #212943;
+$secondary-text-color: #9EA6AE;
+$details: #DEE4F1;
+.heading {
+    color: $primary-text-color;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+}
+
+.container {
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
+}
+
+.containerContain {
+    margin: 0 auto;
+    padding: 2rem;
+    border-radius: 8px;
+}
+
+@media (min-width: 1536px) {
+    .containerContain {
+        max-width: 1200px;
+    }
+}
+
+form {
+    display: flex;
+    width: 35rem;
+    background-color: #fff;
+    align-items: center;
+    margin: 0 auto;
+    border-radius: 1rem;
+    svg {
+        height: 1rem;
+        fill: $secondary-text-color;
+        position: fixed;
+        width: 4rem;
+    }
+}
+
+.searchbar {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+    border: none;
+    padding: 1rem;
+    padding-left: 4rem;
+    width: 100%;
+    box-shadow: 0px 5px 13px 0px $details;
+    border-radius: 0.8rem;
+}
+
+.searchbar:focus {
+    outline: none;
+    box-shadow: 0 0 0 1.5px $details, 0px 5px 13px 0px $details;
+    ;
+}
+
+.faq {
+    margin: 3rem 0;
+}
+
+.question-wrapper {
+    width: 35rem;
+    border-bottom: 1px solid $details;
+    margin: 0 auto;
+    padding: 1rem;
+    transition: 1s;
+}
+
+.question {
+    display: flex;
+    font-size: 1rem;
+    font-weight: 500;
+    color: $primary-text-color;
+    display: flex;
+    justify-content: space-between;
+    svg {
+        width: 1rem;
+        height: 1.5rem;
+        fill: $secondary-text-color;
+    }
+    svg.active {
+        transform: rotate(180deg);
+    }
+    svg:hover {
+        opacity: 0.8;
+    }
+}
+
+button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+button:focus {
+    outline: none;
+}
+
+.answer {
+    display: none;
+}
+
+.answer.active {
+    display: block;
+    text-align: left;
+    padding-top: 1.5rem;
+    font-weight: light;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: $secondary-text-color;
+    height: 0%;
+    animation: slidein 0.4s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes slidein {
+    from {
+        opacity: 0.3;
+        transform: translateY(-20%)
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0%);
+    }
+}
+
+//second FAQ Multiple choice fro here
+@import url(https://fonts.googleapis.com/css?family=Lato);
+$background-color: #333;
+$text-color: #fff;
+$break-color: #494949;
+.faq_nav {
+    display: block;
+    width: 100%;
+    float: left;
+    border-bottom: 1px solid $break-color;
+    ol {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        border-bottom: 1px solid $break-color;
+    }
+    li {
+        display: inline-block;
+        float: left;
+        padding: 12px 20px 6px 0;
+    }
+    h4 {
+        font-weight: 300;
+        margin: 0;
+    }
+    a {
+        display: inline-block;
+        padding: 0 0 2px 0;
+        text-decoration: none;
+        text-transform: UPPERCASE;
+        color: white;
+        border-bottom: 1px solid transparent;
+        &:hover {
+            border-bottom: 1px solid #fff;
+        }
+    }
+}
+
+.selected {
+    border-bottom: 1px solid #fff;
+}
+
+.faq_page_contents {
+    display: block;
+    width: 100%;
+    float: left;
+    padding: 10px 0 0 20px;
+}
+
+.faq_question {
+    position: relative;
+    cursor: pointer;
+    padding-left: 20px;
+    &:after {
+        position: absolute;
+        background: none;
+        content: "\25bc";
+        color: #fff;
+        font-size: 14px;
+        top: 4px;
+        left: 0;
+        pointer-events: none;
+        transform-origin: 50% 40%;
+        transform: rotate(-90deg);
+        transition: all .3s ease;
+    }
+}
+
+.faq_question {
+    position: relative;
+    cursor: pointer;
+    padding-left: 20px;
+    &:after {
+        position: absolute;
+        background: none;
+        content: "\25bc";
+        color: #fff;
+        font-size: 14px;
+        top: 4px;
+        left: 0;
+        pointer-events: none;
+        transform-origin: 50% 40%;
+        transform: rotate(-90deg);
+        transition: all .3s ease;
+    }
+}
+
+.faq_question_open {
+    &:after {
+        //  top: 2px;
+        // margin:0px 0px 0px 0px;
+        transform: rotate(0deg);
+    }
+}
+
+.faq_answer {
+    display: block;
+    overflow: hidden;
+    max-height: 0;
+    padding-left: 20px;
+    transition: max-height 0.5s ease;
+}
+
+.faq_answer_open {
+    display: block;
+    padding-left: 20px;
+    max-height: 50px; // change depending max size
+    transition: max-height 0.5s ease;
+}

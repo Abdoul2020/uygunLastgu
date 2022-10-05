@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom'
 const UnderHeader = () => {
   return (
    
-    <div style={{background:"#1c7b17", textAlign:"center", color:"#FFFF"}}>
+    <div style={{background:"#1c7b17", textAlign:"center", color:"#FFFF" }}>
       <Link to="">
-      <small>
+      <small style={{fontSize:"90%"}}>
       UygunSec sigorta , farklı sigorta şirketler için teklif almanızı sağlar.Bilgi Alın.
       </small>
       </Link>

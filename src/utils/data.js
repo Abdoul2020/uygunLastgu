@@ -2,6 +2,7 @@ import I1 from "../img/auto.svg";
 import F1 from "../img/dask.svg";
 import C3 from "../img/health.svg";
 import Fi1 from "../img/housing.svg";
+import car_kasko from "../img/car.gif"
 
 export const heroData = [{
         id: 1,

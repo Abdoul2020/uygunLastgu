@@ -1,4 +1,5 @@
 @import url(https://fonts.googleapis.com/css?family=Poppins:100,100italic,200,200italic,300,300italic,regular,italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic);
+@import "react-alice-carousel/lib/alice-carousel.css";
 * {
     margin: 0;
     padding: 0;
@@ -7,6 +8,13 @@
 
 body {
     font-family: "Poppins", sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    overflow: hidden !important;
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 16px;
+    /* identical to box height */
 }
 
 html,
@@ -19,6 +27,24 @@ body {
     width: auto !important
 }
 
+.flag-dropdown {
+    pointer-events: none;
+}
+
+.form-control {
+    width: 100% !important;
+    background: none;
+    box-sizing: content-box;
+    font: inherit;
+    letter-spacing: inherit;
+    color: currentColor;
+    border: 0;
+    margin: 0;
+    -webkit-tap-highlight-color: transparent;
+    display: block;
+    min-width: 0;
+}
+
 @media only screen and (max-width: 425px) {
     /* For desktop: */
     .owl-carousel .owl-item img {
@@ -26,6 +52,74 @@ body {
     }
 }
 
+
+/* .secondclass:hover {
+    padding-right: 150px;
+} */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* //carousel css form here */
+
+.alice-carousel__stage-item img {
+    margin: auto !important;
+}
+
+.alice-carousel__stage-item {
+    border-radius: 6px;
+    border: 1px solid #d8d8d8;
+    padding: 10px 10px;
+    margin-left: 10px !important;
+    margin-right: 10px !important;
+    background: #FFF;
+}
+
+.alice-carousel__dots,
+.alice-carousel__prev-btn,
+.alice-carousel__next-btn {
+    display: none !important;
+}
+
+.alice-carousel__stage {
+    margin-bottom: 50px !important;
+}
+
+
+/* css of faq from heer */
+
+.ulList {
+    list-style-type: disc;
+    padding-left: 25px
+}
+
+.carousel-prev,
+.carousel-next {
+    display: none !important;
+}
+
+.faq_nav {
+    text-align: center !important;
+}
+
+.faq_nav a {
+    color: #232d63 !important;
+}
+
+.faq_nav a:hover {
+    border-bottom: 1px solid #232d63 !important;
+}
+
+.faq_nav li {
+    float: none !important;
+}
+
+.faq_question {
+    padding: 26px 36px
+}
+
+.faq_nav ol,
+.faq_nav {
+    border-bottom: none !important;
+}

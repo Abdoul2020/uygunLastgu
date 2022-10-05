@@ -33,6 +33,8 @@ const HomeContainer = () => {
               md={12}
               sm={12}
               lg={12}
+
+              style={{paddingLeft:"100px"}}
               
             >
               <div
@@ -43,8 +45,8 @@ const HomeContainer = () => {
    margin:"0 auto",
     padding: "10px",
     position: "relative",
-
-    top:"50%"
+    marginTop:"160px"
+    // top:"50%"
                 }}
               >
               <p className="text-base text-orange-500 font-semibold">
@@ -59,13 +61,9 @@ const HomeContainer = () => {
               </div>
 
               </div>
-             
-              {/* className="text-[2.5rem] lg:text-[4.5rem] font-bold tracking-wide text-headingColor" */}
-              {/* className="text-orange-600 text-[3rem] lg:text-[5rem]" */}
-            </Grid>
-            <Grid xs={12} md={12} sm={12} lg={12} style={{textAlign:"center", justifyContent:"center"}}>
 
-              <h1 className=" text-[2.5rem]  font-bold tracking-wide text-white " style={{textAlign:"right !important"}}>
+              <div style={{marginTop:"50px"}}>
+              <h1 className=" text-[2.5rem]  font-bold tracking-wide text-white " style={{textAlign:"center"}}>
               Sigortada Güvenin Adresi
               </h1>
               {/* <p className="text-[2.5rem]  font-bold tracking-wide text-white">
@@ -74,31 +72,40 @@ const HomeContainer = () => {
                   Adresi
                 </span>
               </p> */}
-              <p className="text-white items-center justify-center">
+              <p className="text-white items-center justify-center" style={{textAlign:"center"}}>
               Doğru Ürün. İyi Fiyat. 7/24 Hizmet.
               </p>
               <div className="flex"
                style={{
-                width:"50%",
-                height: "auto",
- margin:"0 auto",
-  padding: "10px",
+                
   position: "relative",
-  marginTop:"50px"
+  justifyContent:"center",
+  marginTop:"40px"
+
               }}
               >
               <button
                 type="button"
                 className="bg-gradient-to-br from-orange-400 to-orange-500 w-full md:w-auto px-4 py-2 flex rounded-lg hover:shadow-lg transition-all ease-in-out duration-100"
+                
                 style={{
-                  textAlign: "center",
-                  justifyContent: "center",
-                  minWidth: "260px"
+                  width: "auto !important",
+    height: "auto !important",
+    padding: "18px 90px",
+    lineHeight: "17px",
+    borderRadius: "30px",
+    transformOrigin: "center center",
+    fontWeight: "600!important",
+    border:"none",
+    fontSize: "18px",
+   
+    color:"#FFFF"
+   
                 }}
               >
-                <MdLocalGroceryStore className="mt-1"/> &nbsp; Teklif Al
+                Hemen Teklif Alın
               </button>
-              <button
+              {/* <button
                 type="button"
                 className="bg-gradient-to-br from-orange-400 to-orange-500 w-full md:w-auto px-4 py-2 flex rounded-lg hover:shadow-lg transition-all ease-in-out duration-100 ml-4"
                 style={{
@@ -108,9 +115,16 @@ const HomeContainer = () => {
                 }}
               >
                 <MdLocalGroceryStore className="mt-1"/> &nbsp; Hemen Ara
-              </button>
+              </button> */}
               </div>
+
+
+              </div>
+             
+              {/* className="text-[2.5rem] lg:text-[4.5rem] font-bold tracking-wide text-headingColor" */}
+              {/* className="text-orange-600 text-[3rem] lg:text-[5rem]" */}
             </Grid>
+            
 
          
           </Grid>
@@ -159,9 +173,10 @@ const HomeContainer = () => {
             
 
             <Grid container xs={12} md={12} sm={12} lg={12} 
-            className="w-full h-full left-0 absolute top-0 items-center justify-center py-4  flex-wrap xl:pl-44 z-999"
+            className="w-full h-full left-0 absolute top-0 items-center justify-center py-4  flex-wrap  z-999 secondclass"
 
             style={{zIndex:"1"}}
+            paddingRight={{xs:"0" ,sm:"50px", md:"0" ,lg:"150px"}}
             >
            
               {heroData &&
@@ -176,10 +191,13 @@ style={{textAlign:"center"
                   >
 
                     <Grid
-                     className="  bg-cardOverlay backdrop-blur-md rounded-3xl flex flex-col items-center justify-center drop-shadow-lg "
+                     className="  bg-white backdrop-blur-md  flex flex-col items-center justify-center drop-shadow-lg "
                    
                      width={{sm:"150px", md:"200px" ,xs:"150px", lg:"200px"}}
                      margin={{sm:"auto !important" , md:"auto !important", xs:"auto !important", lg:"auto !important"}}
+
+                     style={{background:"#FFFF !important"}}
+                    //  bg-cardOverlay
                     >
 
                   

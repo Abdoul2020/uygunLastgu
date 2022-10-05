@@ -5,6 +5,8 @@ import NotFound from "../img/NotFound.svg";
 import { Grid } from "@mui/material";
 import Typography from "@material-ui/core/Typography";
 
+import creditcard from "../img/credit-card.svg"
+
 const RowContainer = ({ flag, data, scrollValue }) => {
   
   return (
@@ -64,7 +66,7 @@ const RowContainer = ({ flag, data, scrollValue }) => {
             Items Not Available
           </p> */}
           <Grid    marginLeft={{xs:"0px", sm:"70px", md:"70px", lg:"70px"}} marginRight={{xs:"0px", sm:"70px", md:"70px", lg:"70px"}} style={{
-             marginBottom:"100px"
+             
           }}>
          
                 <Grid xs={12} className="w-full text-center mb-5" style={{color: "#393d45"
@@ -74,15 +76,66 @@ const RowContainer = ({ flag, data, scrollValue }) => {
                 </Typography> */}
 
                 <section className="w-full " id="menu">
-      <div className="w-full flex flex-col  justify-center">
+      {/* <div className="w-full flex flex-col  justify-center">
         <p className="text-2xl font-semibold capitalize text-headingColor relative before:absolute before:rounded-lg before:content before:w-16 before:h-1 before:-bottom-2  before:bg-gradient-to-tr from-orange-400 to-orange-600 transition-all ease-in-out duration-100 text-center">
         Neden Biz?
         </p>
-      </div>
+      </div> */}
     </section>
                 </Grid>
 
-                <Grid container 
+                <Grid container>
+                  <Grid xs={12} sm={12} md={12} lg={12}>
+                    <Grid container>
+                      <Grid xs={12} sm={12} md={4} lg={4} >
+                        <div style={{display:"flex"}}>
+                          <div style={{width:"50px" , marginLeft:"auto"}}>
+                          <img src="https://static.koalay.com/Images/KoalayApp/Desktop/Marketing/LandingPage/lists.svg" alt="" />
+                          </div>
+
+                          <div style={{marginRight:"auto" ,marginLeft:"20px"}}>
+                          20 Sigorta Şirketinin <br /> Tekliflerini Karşılaştır
+                          </div>
+                          
+                        </div>
+
+                      </Grid>
+                      <Grid xs={12} sm={12} md={4} lg={4} >
+                        <div style={{display:"flex"}}>
+                          <div style={{width:"50px", marginLeft:"auto"}}>
+                          <img src={creditcard} alt="" />
+                          </div>
+
+                          <div style={{marginRight:"auto" , marginLeft:"20px"}}>
+                          9 Aya Varan Taksit <br />
+                          İmkanlarından Faydalan
+                          </div>
+                          
+                        </div>
+
+                      </Grid>
+                      <Grid xs={12} sm={12} md={4} lg={4} >
+                        <div style={{display:"flex"}}>
+                          <div style={{width:"50px" , marginLeft:"auto"}}>
+                          <img src="https://static.koalay.com/Images/KoalayApp/Desktop/Marketing/LandingPage/checked.svg" alt="" />
+                          </div>
+
+                          <div style={{marginRight:"auto", marginLeft:"20px"}}>
+                          1 Dakika İçinde <br />
+                          Poliçeni Satın Al
+                          </div>
+                          
+                        </div>
+
+                      </Grid>
+
+                    </Grid>
+
+                  </Grid>
+
+                </Grid>
+
+                {/* <Grid container 
                 
                 >
 
@@ -247,12 +300,12 @@ display: "block"
               
                           </Grid> */}
 
-</Grid>
+{/* </Grid> */}
 
 
-            </Grid>
+            {/* </Grid> */}
            
-            </Grid>
+            {/* </Grid> */} 
           </Grid>
         </div>
       )}

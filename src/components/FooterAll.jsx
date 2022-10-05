@@ -16,6 +16,8 @@ import FacebookRoundedIcon from '@mui/icons-material/FacebookRounded';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import InstagramIcon from '@mui/icons-material/Instagram';
 
+import phoneResim from "../img/phone_1.png"
+
 const styles = {}
 
 function createData(name, link) {
@@ -106,7 +108,7 @@ const FooterAll = (props) => {
       <section style={{ background: "white" }} className="hidden lg:flex w-full h-full items-center justify-between">
 
         <Grid container style={{ width: '70%', margin: 'auto' }}>
-          <Grid item xs={12} style={{ marginTop: 10, marginLeft: -5 }}>
+          <Grid item xs={12} style={{ marginTop: "50px", marginLeft: -5 }}>
             <img src={Logo} alt="" style={{ maxWidth: "100px", display: 'inline-block' }} />
             
             <p className="text-headingColor text-xl font-bold" style={{ display: 'inline-block' }}>&nbsp;&nbsp;UygunuSec</p>
@@ -120,9 +122,13 @@ const FooterAll = (props) => {
 
             <Grid xs={3}>
               <div style={{ marginBottom: 40 }}>
-                <p style={{ marginBottom: 5 }}>Bizi Arayın</p>
-                <PhoneIcon />
+                <p style={{ marginBottom: 5 }}>Yardımcı olmaya hazırız</p>
+                {/* <PhoneIcon /> */}
+                <div style={{display:"flex"}}>
+                <img src={phoneResim} alt="" style={{width:"22px"}}/>&nbsp;&nbsp;
                 <span> 555 555 55 55</span>
+                </div>
+                
               </div>
               <div style={{ marginBottom: 20 }}>
                 <p style={{ marginBottom: 3 }}>Bizi Takip Edin</p>

@@ -45,7 +45,8 @@ useEffect(() => {
 
   return (
     <div
-      className={`${isVisible ? "block" : "hidden"} absolute w-40    right-0`}
+      className={`${isVisible ? "block" : "hidden"} absolute w-40    `}
+      style={{right:"-50px"}}
     >
 
 {
@@ -107,15 +108,30 @@ style={{ borderRadius: "10px" }}
 {" "}
 {/* <SubMenu items={items} /> */}{" "}
 <Grid container>
-  <Grid item className="" md={12}>
+  <Grid item className="" md={12} style={{
+    textAlign: "center",
+    background: "gray",
+    borderRadius: "5px",
+    
+  }}>
     {" "}
     <Link to="login">
-      <Button>Giriş Yap </Button>{" "}
+      <Button style={{
+        color:"#FFFF",
+      }}>Giriş Yap </Button>{" "}
     </Link>
   </Grid>{" "}
-  <Grid item className="" md={12}>
+  <Grid item className="" md={12}
+  style={{
+    textAlign: "center",
+    background: "rgb(28, 123, 23)",
+    borderRadius: "5px",
+    marginTop:"10px"
+  }}>
     <Link to="/register">
-      <Button>Üye Ol </Button>{" "}
+      <Button style={{
+        color:"#FFFF",
+      }}>Üye Ol </Button>{" "}
     </Link>
   </Grid>{" "}
 </Grid>{" "}

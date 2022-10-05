@@ -4,6 +4,9 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import MenuItem from "@mui/material/MenuItem";
 
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/bootstrap.css";
+
 // material-ui
 import { useTheme } from "@mui/material/styles";
 
@@ -472,70 +475,43 @@ const scriptedRef = useScriptRef();
               )}
             </FormControl>
 
+          
+
+
+            {/* //phone Number only Türkiye */}
             <FormControl
               fullWidth
               error={Boolean(touched.phoneNumber && errors.phoneNumber)}
               sx={{ ...theme.typography.customInput }}
+              style={{marginTop:"10px" , marginBottom:"10px"}}
             >
-              {/* spacing={matchDownSM ? 0 : 2} */}
-              <Grid container>
-                <Grid item xs={12} sm={4} md={4} lg={4} className="md:pr-1" >
+              {/* <InputLabel htmlFor="outlined-adornment-password-register">
+              Cep Telefonu Numaranız
+              </InputLabel> */}
+              <PhoneInput
+                                      id="phoneNumber"
+                                      fullWidth
+                                      type="text"
+                                      country={"tr"}
+                                      margin="normal"
+                                      name="phoneNumber"
+                                      onBlur={handleBlur}
+          value={values.phoneNumber}
+          onChange={(e) => handleChange(e)
+          }
+                                    />
 
-                  
-                  <TextField
-                    id="phoneHeader"
-                    select
-                    label="Seçiniz"
-                    margin="normal"
-                    value={values.phoneHeader}
-                    fullWidth
-                    name="phoneHeader"
-                    onChange={(e)=>{handleChange(e); console.log("Number changes:", e.target.value)}}
-                  >
-                     {touched.phoneHeader && errors.phoneHeader && (
-                    <FormHelperText
-                      error
-                      id="standard-weight-helper-text--register"
-                    >
-                      {errors.phoneHeader}
-                    </FormHelperText>
-                  )}
-                    {numbersAll.map((option) => (
-                      <MenuItem key={option.value} value={option.value} autoFocus={true}  disableGutters={false} divider={true}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                </Grid>
-                <Grid item xs={12} sm={8} md={8} lg={8} className="md:pl-1">
-                  <TextField
-                  id="phoneNumber"
-                    fullWidth
-                    type="text"
-                    label="Numara"
-                    margin="normal"
-                    name="phoneNumber"
-                    defaultValue=""
-                    onBlur={handleBlur}
-                    value={values.phoneNumber}
-                    onChange={(e) => 
-                      e.target.value === "" || numberOnly.test(e.target.value) ? 
-                      handleChange(e): ""
-                    }
-                    inputProps={{ maxLength: 7 }}
-                  />
-
-                  {touched.phoneNumber && errors.phoneNumber && (
-                    <FormHelperText
-                      error
-                      id="standard-weight-helper-text--register"
-                    >
-                      {errors.phoneNumber}
-                    </FormHelperText>
-                  )}
-                </Grid>
-              </Grid>
+{touched.phoneNumber && errors.phoneNumber && (
+          <FormHelperText
+            error
+            id="standard-weight-helper-text--register"
+          >
+            {errors.phoneNumber}
+          </FormHelperText>
+        )}
             </FormControl>
+
+
 
             <FormControl
               fullWidth
@@ -629,6 +605,8 @@ const scriptedRef = useScriptRef();
                 />
               </Grid>
             </Grid>
+
+            
             {errors.submit && (
               <Box sx={{ mt: 3 }}>
                 <FormHelperText error>{errors.submit}</FormHelperText>

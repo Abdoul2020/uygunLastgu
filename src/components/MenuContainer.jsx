@@ -60,18 +60,7 @@ const MenuContainer = (props) => {
   const { classes } = props;
   
   return (
-    <div>
-
-   
-    {/* <section className="w-full " id="menu">
-      <div className="w-full flex flex-col  justify-center">
-        <p className="text-2xl font-semibold capitalize text-headingColor relative before:absolute before:rounded-lg before:content before:w-16 before:h-1 before:-bottom-2  before:bg-gradient-to-tr from-orange-400 to-orange-600 transition-all ease-in-out duration-100 text-center">
-        Sigorta Bizimle Başlayın.
-        </p>
-      </div>
-    </section> */}
-
-    <section>
+    <div style={{width:"100%", background:"#FFFF", marginBottom:"50px", marginTop:"50px"}}>
     <Grid container>
     <Grid xs={12} sm={12} md={12} lg={12}>
 
@@ -93,7 +82,6 @@ const MenuContainer = (props) => {
     </div>
 
 
-
   </Grid>
 
   <Grid item xs={12} sm={6} md={6} lg={6} marginLeft={{xs:"0px", sm:"-50px", md:"-90px", lg:"-100px"}} padding={{xs:"20px", sm:"", md:"",lg:""}} marginTop={{xs:"0px", sm:"180px", md:"250px", lg:"250px"}}>
@@ -109,9 +97,39 @@ const MenuContainer = (props) => {
               Tüm teminatları tek tek inceledik, ihtiyaçlarına en uygun olan teminatları belirledik. Sana özel kapsamlı ve fiyatı uygun ürün önerileri hazırladık.
               </p>
 
-              <Button>
-                Hemen Teklif Al
-              </Button>
+              <div className=""
+               style={{
+                
+  position: "relative",
+  float:"left",
+  marginTop:"40px"
+
+              }}
+              >
+              <button
+                type="button"
+                className="bg-gradient-to-br from-orange-400 to-orange-500 w-full md:w-auto px-4 py-2 flex rounded-lg hover:shadow-lg transition-all ease-in-out duration-100"
+                
+                style={{
+                  width: "auto !important",
+    height: "auto !important",
+    padding: "18px 90px",
+    lineHeight: "17px",
+    transformOrigin: "center center",
+    fontWeight: "600!important",
+    border:"none",
+    margin:"auto",
+    fontSize: "18px",
+    background:"rgb(28, 123, 23)",
+    color:"#FFFF"
+   
+                }}
+                
+              >
+                 BANA ULAŞIN
+              </button>
+             
+              </div>
             </div>
     </div>
   </Grid>
@@ -120,148 +138,11 @@ const MenuContainer = (props) => {
 
   </Grid>
 
-  {/* <Grid xs={12} md={6} sm={6} lg={6} style={{borderRight:"1px solid black" , textAlign:"center"}} className={classes.dividePhonePart}>
-<Grid container>
-  <Grid xs={12} className={classes.compPart} >
-   <img src={computerImage} alt="UygunuSec"  style={{maxHeight:"400px" , marginLeft: "auto",
-  marginRight: "auto", display: "block"}}/>
-
-  </Grid>
-  <Grid xs={12} className={classes.subTitlePart}>
-
-  <Typography variant="h4"  >
-                Online Alın.
-                </Typography>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas, corrupti.</p>
-                <Button>
-                  Teklif Alın
-                </Button>
-</Grid>
-</Grid>
-
-  </Grid> */}
-
-  {/* <Grid xs={12}  md={6} sm={6} lg={6} style={{borderLeft:"1px solid black" , textAlign:"center"}} className={classes.dividePhonePart}>
-<Grid container>
-  <Grid xs={12} className={classes.compPart}>
-   <img src={phoneImage} alt="UygunuSec" style={{maxHeight:"280px" , marginLeft: "auto",
-  marginRight: "auto", display: "block"}} />
-  </Grid>
-  <Grid xs={12} className={classes.subTitlePart}>
-  <Typography variant="h4"  >
-  Bir Temsilciyi Arayın.
-                </Typography>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas, corrupti.</p>
-                <Button>
-                  Teklif Alın
-                </Button>
-</Grid>
-</Grid>
-  </Grid> */}
-</Grid>
-
-<Typography variant="h4" style={{textAlign:"center" , justifyContent:"center"}} >
   
-    Sigortada Güvenin Adresi.
-                </Typography>
-    <div className="text-center">
-      <p>Doğru Ürün. İyi Fiyat. 7/24 Hizmet.
-        
-      </p>
-    </div>
-
-<Grid xs={12}>
-
-<Grid container style={{ margin:"90px",marginLeft: "auto",
-  marginRight: "auto", paddingLeft:"150px", paddingRight:"150px", paddingBottom:"150px" }}>
-      <Grid xs={12} md={2} sm={2} className={classes.kategoriImage} >
-          <img src="https://insuranlife.1onestrong.com/wp-content/uploads/2022/03/building.png" alt="" className={classes.ImageSector}/>
-      </Grid>
-      <Grid xs={12} md={2} sm={2} className={classes.kategoriImage}>
-          <img src="https://insuranlife.1onestrong.com/wp-content/uploads/2022/03/building.png" className={classes.ImageSector} alt="" />
-      </Grid>
-      <Grid xs={12} md={2} sm={2} className={classes.kategoriImage}>
-          <img src="https://insuranlife.1onestrong.com/wp-content/uploads/2022/03/building.png" alt="" className={classes.ImageSector}/>
-      </Grid>
-      <Grid xs={12} md={2} sm={2} className={classes.kategoriImage}>
-          <img src="https://insuranlife.1onestrong.com/wp-content/uploads/2022/03/building.png" alt="" className={classes.ImageSector} />
-      </Grid>
-      <Grid xs={12} md={2} sm={2} className={classes.kategoriImage}>
-          <img src="https://insuranlife.1onestrong.com/wp-content/uploads/2022/03/building.png" alt="" className={classes.ImageSector} />
-      </Grid>
-      <Grid xs={12} md={2} sm={2} className={classes.kategoriImage}>
-          <img src="https://insuranlife.1onestrong.com/wp-content/uploads/2022/03/building.png" alt=""  className={classes.ImageSector}/>
-      </Grid>
-
-    </Grid>
-
 </Grid>
+
    
-
-
-    <Grid item xs={12}>
-
-      {/* here is the float part */}
-
-      {/* <Grid container>
-        <Grid>
-
-
-        </Grid>
-
-      </Grid> */}
-
-
-      {/* <div className='header section__padding'>
-
-      <div className="header-content" >
-        <div style={{
-          background: "linear-gradient(315deg, #f8ef42 0%, #0fd64f 74%)",
-          width: "100%",
-          height: "300px",
-          borderRadius:"25px",
-          display:"flex",
-          alignItems:"center",
-          justifyContent: "space-around",
-          margin:"auto"
-        }}>
-        <img className="shake-vertical" src="https://insuranlife.1onestrong.com/wp-content/uploads/2022/03/building.png" alt="" style={{
-width: "10%",
-        }} /><br />
-          <h1  style={{ 
- fontFamily: "var(--font-family)",
- width:"70%",
- fontWeight:"bold",
- fontSize: "48px",
- lineHeight: "105.7%",
- color: "#FFFFFF",
- padding: "1rem",
- marginLeft: "2rem"
-
-          }}>İndirimli Sigorta tarifelerini karşılaştırın!</h1>
-        </div>
-      </div>
-      </div> */}
-
-      {/* end of float part */}
-
-
-
-    </Grid>
-
-    </section>
-
-    <section>
-      {/* start of float part */}
-
-
-
-      {/* end of float part */}
-    </section>
-
-  
     </div>
-
 
   );
 };

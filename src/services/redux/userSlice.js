@@ -79,10 +79,9 @@ export const userSlice = createSlice({
             state.status = "loading";
         },
         [getUserAsync.fulfilled]: (state, action) => {
-            console.log("son değişiklik:", action.payload.data.body.data.name)
             state.status = "success";
-            state.displayName = action.payload.data.body.data.name;
-            state.email = action.payload.data.body.data.email;
+            state.displayName = action.payload.data ? action.payload.data.body.data.name : "";
+            state.email = action.payload.data ? action.payload.data.body.data.email : "";
         },
 
 

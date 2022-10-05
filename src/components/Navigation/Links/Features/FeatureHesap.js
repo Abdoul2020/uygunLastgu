@@ -24,13 +24,14 @@ const FeatureHesap = () => {
         activeclassname="cursor-pointer text-orange-400"
         onMouseOver={displayMenu}
       >
-        <li className="text-base text-white hover:text-headingColor duration-100 transition-all ease-in-out cursor-pointer">
-          <motion.img
-            whileTap={{ scale: 0.6 }}
-            src={ Avatar}
-            className="w-4 min-w-[10px] h-4 min-h-[10px] drop-shadow-xl cursor-pointer rounded-full ml-8"
-            alt="UygunuSec"
-          />
+        <li className="text-base  hover:text-headingColor duration-100 transition-all ease-in-out cursor-pointer" style={{color:"#232d63"}}>
+          {" "}
+          {/* <motion.img
+                        whileTap={{ scale: 0.6 }}
+                        src={ Avatar}
+                        className="w-4 min-w-[10px] h-4 min-h-[10px] drop-shadow-xl cursor-pointer rounded-full ml-8"
+                        alt="UygunuSec"
+                      /> */}
           Hesabım{" "}
         </li>{" "}
       </Link>{" "}

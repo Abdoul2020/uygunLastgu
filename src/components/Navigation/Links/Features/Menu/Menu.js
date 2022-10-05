@@ -25,7 +25,11 @@ const Menu = (props) => {
 
   const { classes } = props;
   return (
-    <div className={`${props.isVisible ? "block" : "hidden"} absolute w-508  right-80`} >
+    <div className={`${props.isVisible ? "block" : "hidden"} absolute w-508  `} style={
+      {
+        right:"28rem"
+      }
+    }>
       <div className="mt-4 rounded-tr-base rounded-tl-base bg-gray-50 px-4 py-4 w-full" style={{borderRadius:"10px"}}>
 
         {" "}
@@ -74,7 +78,7 @@ const Menu = (props) => {
                     <h1>Sağlığım</h1>
                     </div>
                     <div>
-                      <img src="https://cdnsnet.mncdn.com/facelift/assets/img/elements/mega-menu/health.svg" alt="" />
+                      <img src="https://cdnsnet.mncdn.com/facelift/assets/img/elements/mega-menu/car.svg" alt="" />
 
                     </div>
                   </div>
@@ -106,12 +110,12 @@ const Menu = (props) => {
                     <h1>Evim</h1>
                     </div>
                     <div>
-                      <img src="https://cdnsnet.mncdn.com/facelift/assets/img/elements/mega-menu/home.svg" alt="" />
+                      <img src="https://cdnsnet.mncdn.com/facelift/assets/img/elements/mega-menu/car.svg" alt="" />
 
                     </div>
                   </div>
                 <br />
-                 <Link to="/kasko_sigorta">
+                 <Link to="/dask_sigorta">
                     DASK
                  </Link>
                  <br />
@@ -134,7 +138,7 @@ const Menu = (props) => {
                     <h1>Eşyalarım</h1>
                     </div>
                     <div>
-                      <img src="https://cdnsnet.mncdn.com/facelift/assets/img/elements/mega-menu/phone.svg" alt="" />
+                      <img src="https://cdnsnet.mncdn.com/facelift/assets/img/elements/mega-menu/car.svg" alt="" />
 
                     </div>
                   </div>

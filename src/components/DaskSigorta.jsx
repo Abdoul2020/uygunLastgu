@@ -27,7 +27,7 @@ const styles={
 }
 
 
-const kasko_sigorta = (props) => {
+const DaskSigorta = (props) => {
 
 
   const {classes}=props;
@@ -47,11 +47,11 @@ const kasko_sigorta = (props) => {
   )
 }
 
-kasko_sigorta.protoTypes={
+DaskSigorta.protoTypes={
   classes: PropTypes.object.isRequired,
 
 
 }
 
 
-export default (withStyles(styles)(kasko_sigorta));
+export default (withStyles(styles)(DaskSigorta));

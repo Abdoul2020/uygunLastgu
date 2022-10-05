@@ -11,6 +11,7 @@ import {
   UnderHeader,
   TemelInfo,
   FooterAll,
+  DaskSigorta,
 } from "./components";
 
 
@@ -76,7 +77,7 @@ const App = (props) => {
 
           {location.pathname == "/admin" || location.pathname == "/admin/user" ? <HeaderAdmin /> : location.pathname=='/login' ? null : location.pathname=='/register' ? null : location.pathname=='/kasko_sigortasi/form/temel_Bilgiler' ? null : location.pathname == "/404" ? null: location.pathname == "/servicep" ? <HeaderServicep /> : < Header />}
           
-          <main className={ location.pathname=='/login' ? "mt-0 md:mt-0 pt-0 w-full" : location.pathname=='/register' ? "mt-0 md:mt-0 pt-0 w-full" : location.pathname=='/kasko_sigortasi/form/temel_Bilgiler' ? "mt-0 md:mt-0 pt-0 w-full" : "mt-14 md:mt-24 pt-4 w-full"}>
+          <main className={ location.pathname=='/login' ? "mt-0 md:mt-0 pt-0 w-full" : location.pathname=='/register' ? "mt-0 md:mt-0 pt-0 w-full" : location.pathname=='/kasko_sigortasi/form/temel_Bilgiler' ? "mt-0 md:mt-0 pt-0 w-full" : "mt-0 md:mt-0 pt-0 w-full"}>
 
             {location.pathname=='/login' ? null : location.pathname=='/register' ? null : location.pathname=='/kasko_sigortasi/form/temel_Bilgiler' ? null :location.pathname == "/admin/user" ? null: location.pathname == "/admin"? null :location.pathname == "/servicep" ? null : location.pathname == "/404" ? null : < UnderHeader />}
             
@@ -89,6 +90,7 @@ const App = (props) => {
               <Route path="/Register" element={<RegisterPage />} />{" "}
               {/* <Route path="/about_us" element={<Hakkimizda />} />{" "} */}
               <Route path="/kasko_sigorta" element={<KasoTeklif />} />{" "}
+              <Route path="/dask_sigorta" element={<DaskSigorta />} />{" "}
               <Route path="/servicep" element={<ServiceProvider />} />{" "}
               <Route path="/admin" element={<Admin />} />{" "}
               <Route path="/admin/user" element={<AdminUser />} />{" "}

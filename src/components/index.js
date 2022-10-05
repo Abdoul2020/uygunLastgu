@@ -26,3 +26,9 @@ from "./kasko_sigorta"
 
 export { default as TemelInfo }
 from "./kasko_sigortasi/form/temel_Bilgiler"
+
+export { default as HeaderTop }
+from "./HeaderTop"
+
+export { default as DaskSigorta }
+from "./DaskSigorta"
